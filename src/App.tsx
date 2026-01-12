@@ -18,6 +18,17 @@ type PhoneItem = {
 };
 
 export default function App() {
+  /**
+   * BASE_URL resolve corretamente em:
+   * - localhost ("/")
+   * - GitHub Pages ("/NOME-REPO/")
+   *
+   * Então imagens ficam em:
+   * `${BASE_URL}assets/...`
+   */
+  const BASE = import.meta.env.BASE_URL;
+  const ASSETS = `${BASE}assets/`;
+
   const items = useMemo<PhoneItem[]>(
     () => [
       {
@@ -25,7 +36,7 @@ export default function App() {
         title: "iPhone 17",
         descTop: "O futuro na sua mão.",
         descBottom: "Experiência premium total.",
-        img: "/assets/iphone-17.png",
+        img: `${ASSETS}iphone-17.png`,
         highlight: true,
       },
       {
@@ -33,7 +44,7 @@ export default function App() {
         title: "iPhone 16",
         descTop: "Velocidade e eficiência.",
         descBottom: "Câmera que impressiona.",
-        img: "/assets/iphone-16.png",
+        img: `${ASSETS}iphone-16.png`,
         highlight: false,
       },
       {
@@ -41,7 +52,7 @@ export default function App() {
         title: "iPhone 15",
         descTop: "Arrasa cores novas.",
         descBottom: "Câmera que faz mágica.",
-        img: "/assets/iphone-15.png",
+        img: `${ASSETS}iphone-15.png`,
         highlight: false,
       },
       {
@@ -49,7 +60,7 @@ export default function App() {
         title: "iPhone 14",
         descTop: "Tão colorido.",
         descBottom: "E tão poderoso.",
-        img: "/assets/iphone-14.png",
+        img: `${ASSETS}iphone-14.png`,
         highlight: false,
       },
       {
@@ -57,7 +68,7 @@ export default function App() {
         title: "iPhone 13",
         descTop: "Rápido e eficiente.",
         descBottom: "Perfeito para o dia a dia.",
-        img: "/assets/iphone-13.png",
+        img: `${ASSETS}iphone-13.png`,
         highlight: false,
       },
       {
@@ -65,7 +76,7 @@ export default function App() {
         title: "iPhone 12",
         descTop: "Design clássico e leve.",
         descBottom: "Performance consistente.",
-        img: "/assets/iphone-12.png",
+        img: `${ASSETS}iphone-12.png`,
         highlight: false,
       },
       {
@@ -73,11 +84,11 @@ export default function App() {
         title: "iPhone 11",
         descTop: "Excelente custo-benefício.",
         descBottom: "Ótimo para começar.",
-        img: "/assets/iphone-11.png",
+        img: `${ASSETS}iphone-11.png`,
         highlight: false,
       },
     ],
-    []
+    [ASSETS]
   );
 
   const waHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -150,6 +161,7 @@ export default function App() {
 
     const tick = (now: number) => {
       if (!a.running) return;
+
       const t = clamp((now - a.start) / a.dur, 0, 1);
       const v = a.from + (a.to - a.from) * easeOutCubic(t);
       el.scrollLeft = v;
@@ -193,10 +205,14 @@ export default function App() {
         best = i;
       }
     }
+
     return best;
   };
 
-  const scrollToCard = (idx: number, mode: "animate" | "instant" = "animate") => {
+  const scrollToCard = (
+    idx: number,
+    mode: "animate" | "instant" = "animate"
+  ) => {
     const el = scrollerRef.current;
     if (!el) return;
 
@@ -338,7 +354,8 @@ export default function App() {
     const el = scrollerRef.current;
     if (!el) return;
 
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    const delta =
+      Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
     if (Math.abs(delta) < 2) return;
 
     e.preventDefault();
@@ -387,16 +404,27 @@ export default function App() {
       <header className={`topbar ${headerVisible ? "topbarShow" : ""}`}>
         <div className="topbarSlot" aria-hidden="true" />
 
-        <button className="brandCenter" type="button" onClick={() => goTo("hero")}>
-          {/* GitHub Pages OK */}
-          <img src="/assets/logo.png" alt="BLACK ROCK" />
+        <button
+          className="brandCenter"
+          type="button"
+          onClick={() => goTo("hero")}
+        >
+          <img src={`${ASSETS}logo.png`} alt="BLACK ROCK" />
         </button>
 
         <div className="topbarActions">
-          <button className="topbarBtn" type="button" onClick={() => goTo("hero")}>
+          <button
+            className="topbarBtn"
+            type="button"
+            onClick={() => goTo("hero")}
+          >
             Início
           </button>
-          <button className="topbarBtn" type="button" onClick={() => goTo("compare")}>
+          <button
+            className="topbarBtn"
+            type="button"
+            onClick={() => goTo("compare")}
+          >
             Explorar
           </button>
           <a className="topbarCta" href={waHref} target="_blank" rel="noreferrer">
@@ -407,17 +435,19 @@ export default function App() {
 
       <section className="hero" id="hero">
         <div className="heroInner">
-          {/* GitHub Pages OK */}
-          <img className="heroLogo" src="/assets/logo.png" alt="BLACK ROCK" />
+          <img className="heroLogo" src={`${ASSETS}logo.png`} alt="BLACK ROCK" />
           <div className="heroTag">EXPERIÊNCIA DE OUTRO MUNDO!</div>
 
           <div className="heroPhonesWrap" aria-hidden="true">
-            {/* GitHub Pages OK */}
-            <img className="heroPhones" src="/assets/phones.png" alt="" />
+            <img className="heroPhones" src={`${ASSETS}phones.png`} alt="" />
           </div>
 
           <div className="heroCtas">
-            <button className="heroBtn" type="button" onClick={() => goTo("compare")}>
+            <button
+              className="heroBtn"
+              type="button"
+              onClick={() => goTo("compare")}
+            >
               EXPLORAR
             </button>
           </div>
@@ -435,7 +465,7 @@ export default function App() {
             </p>
           </div>
 
-          {/* FULL-BLEED: começa na esquerda da tela */}
+          {/* FULL-BLEED: garante início na esquerda da TELA */}
           <div className="carouselFull">
             <div className="carouselShell">
               <button
