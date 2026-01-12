@@ -16,7 +16,7 @@ export default function App() {
         title: "iPhone 17",
         descTop: "O futuro na sua mão.",
         descBottom: "Experiência premium total.",
-        img: "/src/assets/iphone-17.png",
+        img: "/assets/iphone-17.png",
         highlight: true,
       },
       {
@@ -24,7 +24,7 @@ export default function App() {
         title: "iPhone 16",
         descTop: "Velocidade e eficiência.",
         descBottom: "Câmera que impressiona.",
-        img: "/src/assets/iphone-16.png",
+        img: "/assets/iphone-16.png",
         highlight: false,
       },
       {
@@ -32,7 +32,7 @@ export default function App() {
         title: "iPhone 15",
         descTop: "Arrasa cores novas.",
         descBottom: "Câmera que faz mágica.",
-        img: "/src/assets/iphone-15.png",
+        img: "/assets/iphone-15.png",
         highlight: false,
       },
       {
@@ -40,7 +40,7 @@ export default function App() {
         title: "iPhone 14",
         descTop: "Tão colorido.",
         descBottom: "E tão poderoso.",
-        img: "/src/assets/iphone-14.png",
+        img: "/assets/iphone-14.png",
         highlight: false,
       },
       {
@@ -48,7 +48,7 @@ export default function App() {
         title: "iPhone 13",
         descTop: "Rápido e eficiente.",
         descBottom: "Perfeito para o dia a dia.",
-        img: "/src/assets/iphone-13.png",
+        img: "/assets/iphone-13.png",
         highlight: false,
       },
       {
@@ -56,7 +56,7 @@ export default function App() {
         title: "iPhone 12",
         descTop: "Design clássico e leve.",
         descBottom: "Performance consistente.",
-        img: "/src/assets/iphone-12.png",
+        img: "/assets/iphone-12.png",
         highlight: false,
       },
       {
@@ -64,7 +64,7 @@ export default function App() {
         title: "iPhone 11",
         descTop: "Excelente custo-benefício.",
         descBottom: "Ótimo para começar.",
-        img: "/src/assets/iphone-11.png",
+        img: "/assets/iphone-11.png",
         highlight: false,
       },
     ],
@@ -370,7 +370,7 @@ export default function App() {
         <div className="topbarSlot" aria-hidden="true" />
 
         <button className="brandCenter" type="button" onClick={() => goTo("hero")}>
-          <img src="/src/assets/logo.png" alt="BLACK ROCK" />
+          <img src="/assets/logo.png" alt="BLACK ROCK" />
         </button>
 
         <div className="topbarActions">
@@ -391,7 +391,7 @@ export default function App() {
           <img className="heroLogo" src="/src/assets/logo.png" alt="BLACK ROCK" />
 
           <div className="heroPhonesWrap" aria-hidden="true">
-            <img className="heroPhones" src="/src/assets/phones.png" alt="" />
+            <img className="heroPhones" src="/assets/phones.png" alt="" />
           </div>
 
           <div className="heroCtas">
