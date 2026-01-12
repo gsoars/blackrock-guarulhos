@@ -1,6 +1,7 @@
 :root{
   --bg0:#000;
   --text:#fff;
+  --muted: rgba(255,255,255,.70);
   --muted2: rgba(255,255,255,.55);
 
   --green1:#8bea45;
@@ -287,19 +288,18 @@ body{
   color: var(--muted2);
 }
 
-/* FULL-BLEED wrapper: faz o carrossel começar na esquerda da tela */
+/* FULL-BLEED wrapper: começa na esquerda da tela */
 .carouselFull{
   width: 100vw;
   margin-left: calc(50% - 50vw);
 }
 
-/* shell */
 .carouselShell{
   position: relative;
   width: 100%;
 }
 
-/* Carrossel: começa colado à esquerda */
+/* Carrossel */
 .carousel{
   width: 100%;
   overflow-x: auto;
@@ -311,13 +311,11 @@ body{
   scrollbar-width: none;
   -ms-overflow-style: none;
 
-  /* padding-left define o “encostar” na esquerda da tela */
   padding: 18px 140px 22px 24px;
 
   touch-action: pan-x;
   cursor: grab;
 
-  /* máscara apenas no final direito */
   mask-image: linear-gradient(
     90deg,
     #000 0%,

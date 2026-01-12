@@ -4,12 +4,21 @@ import "./App.css";
 const WHATSAPP_NUMBER = "5511999999999";
 const WHATSAPP_TEXT = "Olá! Quero saber mais sobre os iPhones da Black Rock.";
 
-function clamp(n, min, max) {
+function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
 }
 
+type PhoneItem = {
+  id: string;
+  title: string;
+  descTop: string;
+  descBottom: string;
+  img: string;
+  highlight: boolean;
+};
+
 export default function App() {
-  const items = useMemo(
+  const items = useMemo<PhoneItem[]>(
     () => [
       {
         id: "17",
@@ -75,7 +84,7 @@ export default function App() {
     WHATSAPP_TEXT
   )}`;
 
-  const goTo = (id) => {
+  const goTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -93,11 +102,18 @@ export default function App() {
   }, []);
 
   // ===== Carrossel premium =====
-  const scrollerRef = useRef(null);
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(0);
 
   // animação por rAF (evita falhas de botão)
-  const animRef = useRef({ raf: 0, running: false, from: 0, to: 0, start: 0, dur: 0 });
+  const animRef = useRef({
+    raf: 0 as number,
+    running: false,
+    from: 0,
+    to: 0,
+    start: 0,
+    dur: 0,
+  });
   const reducedMotion = useRef(false);
 
   useEffect(() => {
@@ -112,9 +128,9 @@ export default function App() {
     a.running = false;
   };
 
-  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+  const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
-  const animateScrollTo = (targetLeft, durationMs = 520) => {
+  const animateScrollTo = (targetLeft: number, durationMs = 520) => {
     const el = scrollerRef.current;
     if (!el) return;
 
@@ -132,7 +148,7 @@ export default function App() {
     a.start = performance.now();
     a.dur = durationMs;
 
-    const tick = (now) => {
+    const tick = (now: number) => {
       if (!a.running) return;
       const t = clamp((now - a.start) / a.dur, 0, 1);
       const v = a.from + (a.to - a.from) * easeOutCubic(t);
@@ -151,7 +167,7 @@ export default function App() {
   const getCards = () => {
     const el = scrollerRef.current;
     if (!el) return [];
-    return Array.from(el.querySelectorAll("[data-card]"));
+    return Array.from(el.querySelectorAll<HTMLElement>("[data-card]"));
   };
 
   const getActiveByNearest = () => {
@@ -177,11 +193,10 @@ export default function App() {
         best = i;
       }
     }
-
     return best;
   };
 
-  const scrollToCard = (idx, mode = "animate") => {
+  const scrollToCard = (idx: number, mode: "animate" | "instant" = "animate") => {
     const el = scrollerRef.current;
     if (!el) return;
 
@@ -197,9 +212,7 @@ export default function App() {
     }
 
     // geral: centraliza
-    const raw =
-      node.offsetLeft - (el.clientWidth / 2 - node.clientWidth / 2);
-
+    const raw = node.offsetLeft - (el.clientWidth / 2 - node.clientWidth / 2);
     const maxLeft = Math.max(0, el.scrollWidth - el.clientWidth);
     const target = clamp(raw, 0, maxLeft);
 
@@ -207,10 +220,10 @@ export default function App() {
     else animateScrollTo(target, 520);
   };
 
-  const step = (dir) => {
+  const step = (dir: number) => {
     const nextIdx = clamp(active + dir, 0, items.length - 1);
     setActive(nextIdx);
-    scrollToCard(nextIdx);
+    scrollToCard(nextIdx, "animate");
   };
 
   // atualiza active enquanto rola
@@ -258,7 +271,7 @@ export default function App() {
     vel: 0,
   });
 
-  const onPointerDown = (e) => {
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     const el = scrollerRef.current;
     if (!el) return;
 
@@ -276,7 +289,7 @@ export default function App() {
     el.classList.add("isDragging");
   };
 
-  const onPointerMove = (e) => {
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const el = scrollerRef.current;
     if (!el) return;
     if (!drag.current.down) return;
@@ -297,10 +310,10 @@ export default function App() {
   const snapToNearest = () => {
     const idx = getActiveByNearest();
     setActive(idx);
-    scrollToCard(idx);
+    scrollToCard(idx, "animate");
   };
 
-  const onPointerUp = () => {
+  const onPointerUp = (e?: React.PointerEvent<HTMLDivElement>) => {
     const el = scrollerRef.current;
     if (!el) return;
 
@@ -315,10 +328,13 @@ export default function App() {
 
     animateScrollTo(target, 320);
     window.setTimeout(() => snapToNearest(), 340);
+
+    // libera pointer capture se houver evento
+    if (e) el.releasePointerCapture?.(e.pointerId);
   };
 
   // Wheel no carrossel (premium e natural)
-  const onWheel = (e) => {
+  const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     const el = scrollerRef.current;
     if (!el) return;
 
@@ -330,14 +346,14 @@ export default function App() {
     el.scrollLeft += delta * 1.15;
   };
 
-  const onCardClick = (idx) => {
+  const onCardClick = (idx: number) => {
     if (drag.current.moved > 8) return;
     setActive(idx);
-    scrollToCard(idx);
+    scrollToCard(idx, "animate");
   };
 
   // teclado só quando a seção está visível
-  const compareRef = useRef(null);
+  const compareRef = useRef<HTMLElement | null>(null);
   const [compareInView, setCompareInView] = useState(false);
 
   useEffect(() => {
@@ -355,10 +371,12 @@ export default function App() {
 
   useEffect(() => {
     if (!compareInView) return;
-    const onKey = (e) => {
+
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") step(+1);
       if (e.key === "ArrowLeft") step(-1);
     };
+
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -370,6 +388,7 @@ export default function App() {
         <div className="topbarSlot" aria-hidden="true" />
 
         <button className="brandCenter" type="button" onClick={() => goTo("hero")}>
+          {/* GitHub Pages OK */}
           <img src="/assets/logo.png" alt="BLACK ROCK" />
         </button>
 
@@ -388,9 +407,12 @@ export default function App() {
 
       <section className="hero" id="hero">
         <div className="heroInner">
-          <img className="heroLogo" src="/src/assets/logo.png" alt="BLACK ROCK" />
+          {/* GitHub Pages OK */}
+          <img className="heroLogo" src="/assets/logo.png" alt="BLACK ROCK" />
+          <div className="heroTag">EXPERIÊNCIA DE OUTRO MUNDO!</div>
 
           <div className="heroPhonesWrap" aria-hidden="true">
+            {/* GitHub Pages OK */}
             <img className="heroPhones" src="/assets/phones.png" alt="" />
           </div>
 
@@ -413,10 +435,15 @@ export default function App() {
             </p>
           </div>
 
-          {/* FULL-BLEED: garante início na esquerda da TELA */}
+          {/* FULL-BLEED: começa na esquerda da tela */}
           <div className="carouselFull">
             <div className="carouselShell">
-              <button className="arrow arrowLeft" type="button" onClick={() => step(-1)} aria-label="Anterior">
+              <button
+                className="arrow arrowLeft"
+                type="button"
+                onClick={() => step(-1)}
+                aria-label="Anterior"
+              >
                 ‹
               </button>
 
@@ -446,14 +473,19 @@ export default function App() {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
                         setActive(idx);
-                        scrollToCard(idx);
+                        scrollToCard(idx, "animate");
                       }
                     }}
                     aria-label={`${p.title}. ${p.descTop} ${p.descBottom}`}
                   >
                     <div className="cardGlow" aria-hidden="true" />
                     <div className="cardMedia">
-                      <img className="cardImg" src={p.img} alt={p.title} draggable={false} />
+                      <img
+                        className="cardImg"
+                        src={p.img}
+                        alt={p.title}
+                        draggable={false}
+                      />
                     </div>
 
                     <div className="cardBody">
@@ -464,7 +496,11 @@ export default function App() {
                         {p.descBottom}
                       </p>
 
-                      <button className="cardCta" type="button" onClick={(e) => e.preventDefault()}>
+                      <button
+                        className="cardCta"
+                        type="button"
+                        onClick={(e) => e.preventDefault()}
+                      >
                         Saiba mais
                       </button>
                     </div>
@@ -472,7 +508,12 @@ export default function App() {
                 ))}
               </div>
 
-              <button className="arrow arrowRight" type="button" onClick={() => step(+1)} aria-label="Próximo">
+              <button
+                className="arrow arrowRight"
+                type="button"
+                onClick={() => step(+1)}
+                aria-label="Próximo"
+              >
                 ›
               </button>
             </div>
