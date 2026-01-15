@@ -489,7 +489,7 @@ body{
   color: rgba(255,255,255,0.86);
 }
 
-/* Responsivo */
+/* Responsivo base */
 @media (max-width: 1200px){
   :root{ --cardW: 360px; }
 }
@@ -516,9 +516,6 @@ body{
   .brandCenter img{ height: 36px; }
   .topbarBtn{ min-width: auto; padding: 9px 10px; }
   .topbarActions{ gap: 8px; }
-
-  .heroInner{ padding: 28px 16px 26px; }
-  .heroLogo{ width: clamp(150px, 42vw, 210px); }
 
   .compareInner{ padding: calc(var(--barH) + 22px) 16px 30px; }
 
@@ -634,12 +631,8 @@ body{
   color: rgba(255,255,255,.55);
 }
 
-.contactChannelWhats{
-  border-color: rgba(37,211,102,.22);
-}
-.contactChannelIg{
-  border-color: rgba(228,64,95,.22);
-}
+.contactChannelWhats{ border-color: rgba(37,211,102,.22); }
+.contactChannelIg{ border-color: rgba(228,64,95,.22); }
 
 .contactGrid{
   display:grid;
@@ -717,9 +710,7 @@ body{
   font-size: 11px;
   color: rgba(255,255,255,.45);
 }
-.contactFootnote span{
-  color: rgba(255,255,255,.65);
-}
+.contactFootnote span{ color: rgba(255,255,255,.65); }
 
 .contactInfoHead{
   font-size: 12px;
@@ -801,9 +792,9 @@ body{
 }
 
 /* =========================================================
-   HERO RESPONSIVO + CENTRALIZAÇÃO (corrigido)
-   - Resolve o “descentralizado” ao reduzir a janela
-   - Não usa mais 112vw/120vw/160vw no responsivo
+   HERO RESPONSIVO + CENTRALIZAÇÃO + LOGO MAIS PRA CIMA
+   - Corrige “descentralizado” ao reduzir
+   - Logo não fica “muito pra baixo” no celular
    ========================================================= */
 @media (max-width: 980px){
   .heroInner{
@@ -829,12 +820,17 @@ body{
 }
 
 @media (max-width: 620px){
+  /* sobe o conteúdo do hero (principalmente o logo) */
   .heroInner{
-    padding: 22px 14px 18px;
+    padding-top: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-bottom: 18px;
   }
 
   .heroLogo{
     width: clamp(140px, 48vw, 200px);
+    margin-top: -6px;
   }
 
   .heroPhonesWrap{
@@ -869,6 +865,12 @@ body{
   .heroFooter{
     margin-top: 6px;
   }
+}
+
+/* opcional: aparelhos com pouca altura (portrait curto/landscape) */
+@media (max-height: 740px) and (max-width: 620px){
+  .heroInner{ padding-top: 6px; }
+  .heroLogo{ margin-top: -10px; }
 }
 
 @media (max-width: 380px){
