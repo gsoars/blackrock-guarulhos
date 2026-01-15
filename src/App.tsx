@@ -658,6 +658,34 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* ✅ FX BOKEH NO FUNDO (por último pra ficar acima dos overlays) */}
+      {/* ✅ FX BOKEH NO FUNDO (por último pra ficar acima dos overlays) */}
+<div className="bgFx" aria-hidden="true">
+  <span className="bokeh b1" />
+  <span className="bokeh b2" />
+  <span className="bokeh b3" />
+  <span className="bokeh b4" />
+  <span className="bokeh b5" />
+  <span className="bokeh b6" />
+  <span className="bokeh b7" />
+  <span className="bokeh b8" />
+
+  {/* micro partículas (sparkles) */}
+  <span className="spark s1" />
+  <span className="spark s2" />
+  <span className="spark s3" />
+  <span className="spark s4" />
+  <span className="spark s5" />
+  <span className="spark s6" />
+  <span className="spark s7" />
+  <span className="spark s8" />
+  <span className="spark s9" />
+  <span className="spark s10" />
+  <span className="spark s11" />
+  <span className="spark s12" />
+</div>
+
     </div>
   );
 }
