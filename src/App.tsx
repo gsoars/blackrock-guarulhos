@@ -18,14 +18,6 @@ type PhoneItem = {
 };
 
 export default function App() {
-  /**
-   * BASE_URL resolve corretamente em:
-   * - localhost ("/")
-   * - GitHub Pages ("/NOME-REPO/")
-   *
-   * Então imagens ficam em:
-   * `${BASE_URL}assets/...`
-   */
   const BASE = import.meta.env.BASE_URL;
   const ASSETS = `${BASE}assets/`;
 
@@ -116,7 +108,6 @@ export default function App() {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(0);
 
-  // animação por rAF (evita falhas de botão)
   const animRef = useRef({
     raf: 0 as number,
     running: false,
@@ -186,7 +177,6 @@ export default function App() {
     const el = scrollerRef.current;
     if (!el) return 0;
 
-    // primeiro card sempre destacado no começo
     if (el.scrollLeft <= 8) return 0;
 
     const cards = getCards();
@@ -209,10 +199,7 @@ export default function App() {
     return best;
   };
 
-  const scrollToCard = (
-    idx: number,
-    mode: "animate" | "instant" = "animate"
-  ) => {
+  const scrollToCard = (idx: number, mode: "animate" | "instant" = "animate") => {
     const el = scrollerRef.current;
     if (!el) return;
 
@@ -220,14 +207,12 @@ export default function App() {
     const node = cards[idx];
     if (!node) return;
 
-    // idx 0: INÍCIO REAL (não centraliza)
     if (idx === 0) {
       if (mode === "instant") el.scrollLeft = 0;
       else animateScrollTo(0, 520);
       return;
     }
 
-    // geral: centraliza
     const raw = node.offsetLeft - (el.clientWidth / 2 - node.clientWidth / 2);
     const maxLeft = Math.max(0, el.scrollWidth - el.clientWidth);
     const target = clamp(raw, 0, maxLeft);
@@ -242,7 +227,6 @@ export default function App() {
     scrollToCard(nextIdx, "animate");
   };
 
-  // atualiza active enquanto rola
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -261,7 +245,6 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Inicialização: garante começo na esquerda (2 frames)
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -276,7 +259,6 @@ export default function App() {
     });
   }, []);
 
-  // Drag / swipe com inércia
   const drag = useRef({
     down: false,
     startX: 0,
@@ -316,7 +298,7 @@ export default function App() {
 
     const now = performance.now();
     const dt = Math.max(16, now - drag.current.lastT);
-    const vx = (e.clientX - drag.current.lastX) / dt; // px/ms
+    const vx = (e.clientX - drag.current.lastX) / dt;
     drag.current.vel = drag.current.vel * 0.7 + vx * 0.3;
 
     drag.current.lastX = e.clientX;
@@ -336,7 +318,7 @@ export default function App() {
     drag.current.down = false;
     el.classList.remove("isDragging");
 
-    const v = drag.current.vel; // px/ms
+    const v = drag.current.vel;
     const impulse = clamp(v * -420, -520, 520);
 
     const maxLeft = Math.max(0, el.scrollWidth - el.clientWidth);
@@ -345,17 +327,14 @@ export default function App() {
     animateScrollTo(target, 320);
     window.setTimeout(() => snapToNearest(), 340);
 
-    // libera pointer capture se houver evento
     if (e) el.releasePointerCapture?.(e.pointerId);
   };
 
-  // Wheel no carrossel (premium e natural)
   const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     const el = scrollerRef.current;
     if (!el) return;
 
-    const delta =
-      Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
     if (Math.abs(delta) < 2) return;
 
     e.preventDefault();
@@ -369,7 +348,6 @@ export default function App() {
     scrollToCard(idx, "animate");
   };
 
-  // teclado só quando a seção está visível
   const compareRef = useRef<HTMLElement | null>(null);
   const [compareInView, setCompareInView] = useState(false);
 
@@ -404,27 +382,15 @@ export default function App() {
       <header className={`topbar ${headerVisible ? "topbarShow" : ""}`}>
         <div className="topbarSlot" aria-hidden="true" />
 
-        <button
-          className="brandCenter"
-          type="button"
-          onClick={() => goTo("hero")}
-        >
+        <button className="brandCenter" type="button" onClick={() => goTo("hero")}>
           <img src={`${ASSETS}logo.png`} alt="BLACK ROCK" />
         </button>
 
         <div className="topbarActions">
-          <button
-            className="topbarBtn"
-            type="button"
-            onClick={() => goTo("hero")}
-          >
+          <button className="topbarBtn" type="button" onClick={() => goTo("hero")}>
             Início
           </button>
-          <button
-            className="topbarBtn"
-            type="button"
-            onClick={() => goTo("compare")}
-          >
+          <button className="topbarBtn" type="button" onClick={() => goTo("compare")}>
             Explorar
           </button>
           <a className="topbarCta" href={waHref} target="_blank" rel="noreferrer">
@@ -433,28 +399,122 @@ export default function App() {
         </div>
       </header>
 
+      {/* ===== HERO ===== */}
       <section className="hero" id="hero">
         <div className="heroInner">
           <img className="heroLogo" src={`${ASSETS}logo.png`} alt="BLACK ROCK" />
+
+          {/* mantém apenas 1 headline (sem duplicar slogan do logo) */}
+          <h1 className="heroHeadline">iPhones Selecionados. Experiência Elevada.</h1>
 
           <div className="heroPhonesWrap" aria-hidden="true">
             <img className="heroPhones" src={`${ASSETS}phones.png`} alt="" />
           </div>
 
           <div className="heroCtas">
-            <button
-              className="heroBtn"
-              type="button"
-              onClick={() => goTo("compare")}
-            >
-              EXPLORAR
+            <button className="heroBtn" type="button" onClick={() => goTo("compare")}>
+              VER NOSSA SELEÇÃO
             </button>
+
+            <a className="heroBtnGhost" href={waHref} target="_blank" rel="noreferrer">
+              FALAR NO WHATSAPP
+            </a>
+          </div>
+
+          {/* ✅ cards agora NO HERO (não ficam “embaixo”) */}
+          <div className="heroValueInline" aria-label="Diferenciais da Black Rock">
+            <article className="valueCardInline">
+              <div className="valueIconInline" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M7 7.2c1.6-1.3 3.6-2.2 5-2.2s3.4.9 5 2.2"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M6.5 9.5h11l-1 11H7.5l-1-11Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M9 9.5V8.2c0-1.7 1.4-3.2 3-3.2s3 1.5 3 3.2V9.5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+              <div className="valueInlineText">
+                <strong>Modelos selecionados</strong>
+                <span>Curadoria premium.</span>
+              </div>
+            </article>
+
+            <article className="valueCardInline valueCardInlineHighlight">
+              <div className="valueIconInline" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M9.5 12.2l1.7 1.7 3.6-4.1"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <div className="valueInlineText">
+                <strong>Garantia & qualidade</strong>
+                <span>Padrão elevado.</span>
+              </div>
+            </article>
+
+            <article className="valueCardInline">
+              <div className="valueIconInline" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M3 7h11v10H3V7Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M14 10h4l3 3v4h-7v-7Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M7 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                  <path
+                    d="M18 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                </svg>
+              </div>
+              <div className="valueInlineText">
+                <strong>Envio seguro</strong>
+                <span>Atendimento rápido.</span>
+              </div>
+            </article>
           </div>
 
           <div className="heroFooter">BLACK ROCK</div>
         </div>
       </section>
 
+      {/* ===== COMPARE ===== */}
       <section className="compare" id="compare" ref={compareRef}>
         <div className="compareInner">
           <div className="compareTop">
@@ -464,7 +524,6 @@ export default function App() {
             </p>
           </div>
 
-          {/* FULL-BLEED: garante início na esquerda da TELA */}
           <div className="carouselFull">
             <div className="carouselShell">
               <button
@@ -525,11 +584,7 @@ export default function App() {
                         {p.descBottom}
                       </p>
 
-                      <button
-                        className="cardCta"
-                        type="button"
-                        onClick={(e) => e.preventDefault()}
-                      >
+                      <button className="cardCta" type="button" onClick={(e) => e.preventDefault()}>
                         Saiba mais
                       </button>
                     </div>
@@ -558,7 +613,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* ===== CONTATO (abaixo do compare) ===== */}
+      {/* ===== CONTATO ===== */}
       <section className="contact" id="contact">
         <div className="contactInner">
           <h2 className="contactTitle">Contato</h2>
@@ -608,7 +663,6 @@ export default function App() {
           </div>
 
           <div className="contactGrid">
-            {/* Info */}
             <div className="contactCard">
               <div className="contactInfoBlock">
                 <div className="contactInfoHead">WhatsApp:</div>
@@ -649,7 +703,6 @@ export default function App() {
             </a>
           </div>
 
-          {/* Footer simples (opcional) */}
           <div className="contactBottom">
             <span>© 2024 BLACK ROCK. Todos os direitos reservados.</span>
             <span>
@@ -659,33 +712,30 @@ export default function App() {
         </div>
       </section>
 
-      {/* ✅ FX BOKEH NO FUNDO (por último pra ficar acima dos overlays) */}
-      {/* ✅ FX BOKEH NO FUNDO (por último pra ficar acima dos overlays) */}
-<div className="bgFx" aria-hidden="true">
-  <span className="bokeh b1" />
-  <span className="bokeh b2" />
-  <span className="bokeh b3" />
-  <span className="bokeh b4" />
-  <span className="bokeh b5" />
-  <span className="bokeh b6" />
-  <span className="bokeh b7" />
-  <span className="bokeh b8" />
+      {/* ===== FX ===== */}
+      <div className="bgFx" aria-hidden="true">
+        <span className="bokeh b1" />
+        <span className="bokeh b2" />
+        <span className="bokeh b3" />
+        <span className="bokeh b4" />
+        <span className="bokeh b5" />
+        <span className="bokeh b6" />
+        <span className="bokeh b7" />
+        <span className="bokeh b8" />
 
-  {/* micro partículas (sparkles) */}
-  <span className="spark s1" />
-  <span className="spark s2" />
-  <span className="spark s3" />
-  <span className="spark s4" />
-  <span className="spark s5" />
-  <span className="spark s6" />
-  <span className="spark s7" />
-  <span className="spark s8" />
-  <span className="spark s9" />
-  <span className="spark s10" />
-  <span className="spark s11" />
-  <span className="spark s12" />
-</div>
-
+        <span className="spark s1" />
+        <span className="spark s2" />
+        <span className="spark s3" />
+        <span className="spark s4" />
+        <span className="spark s5" />
+        <span className="spark s6" />
+        <span className="spark s7" />
+        <span className="spark s8" />
+        <span className="spark s9" />
+        <span className="spark s10" />
+        <span className="spark s11" />
+        <span className="spark s12" />
+      </div>
     </div>
   );
 }
