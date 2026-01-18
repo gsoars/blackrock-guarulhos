@@ -1,0 +1,176 @@
+/* ===== CONTATO ===== */
+.contact{
+  padding: 80px 16px 42px;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  z-index: 2;
+}
+
+/* ✅ removido contact::after para não criar faixa entre seções */
+
+.contactInner{
+  width: min(980px, 100%);
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.contactTitle{
+  text-align: center;
+  font-size: 44px;
+  margin: 0 0 10px;
+  letter-spacing: .02em;
+}
+
+.contactSubtitle{
+  text-align: center;
+  color: rgba(255,255,255,.62);
+  margin: 0 0 22px;
+  line-height: 1.4;
+}
+
+.contactChannels{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+  gap: 16px;
+  justify-content: center;
+  margin: 18px auto 22px;
+}
+
+.contactChannel{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  text-decoration:none;
+  color: rgba(255,255,255,.92);
+
+  background: rgba(0,0,0,0.46);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 22px 70px rgba(0,0,0,.72);
+
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+
+.contactChannel:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,.18);
+  background: rgba(0,0,0,0.54);
+}
+
+.contactIcon{
+  width: 36px;
+  height: 36px;
+  display:grid;
+  place-items:center;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.contactIcon img{
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: brightness(1.05);
+}
+
+.contactChannelText{
+  display:flex;
+  flex-direction:column;
+  gap: 2px;
+}
+
+.contactChannelText span{
+  font-size: 12px;
+  color: rgba(255,255,255,.55);
+}
+
+.contactChannelWhats{ border-color: rgba(37,211,102,.22); }
+.contactChannelIg{ border-color: rgba(228,64,95,.22); }
+
+.contactGrid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.contactCard{
+  border-radius: 12px;
+  background: rgba(0,0,0,0.46);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 22px 70px rgba(0,0,0,.78);
+  padding: 18px;
+}
+
+.contactInfoHead{
+  font-size: 12px;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 6px;
+}
+
+.contactInfoValue{
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: .02em;
+}
+
+.contactInfoHint{
+  font-size: 12px;
+  color: rgba(255,255,255,.55);
+  margin-top: 6px;
+}
+
+.contactDivider{
+  height: 1px;
+  margin: 12px 0;
+  background: rgba(255,255,255,.08);
+}
+
+.contactCtaBox{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.contactCtaTitle{
+  margin: 8px 0 14px;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255,255,255,.95);
+  letter-spacing: .01em;
+}
+
+.contactCtaBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 10px 16px;
+  border-radius: 10px;
+  text-decoration:none;
+  font-weight: 900;
+  color: rgba(255,255,255,.95);
+  border: 1px solid rgba(148,211,110,.40);
+  background: linear-gradient(180deg, rgba(148,211,110,.25), rgba(90,168,61,.55));
+}
+
+.contactBottom{
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  display:flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: rgba(255,255,255,.45);
+  font-size: 11px;
+}
+
+@media (max-width: 860px){
+  .contactChannels{ grid-template-columns: 1fr; }
+  .contactGrid{ grid-template-columns: 1fr; }
+  .contactBottom{ flex-direction: column; align-items:flex-start; }
+}

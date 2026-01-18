@@ -1,0 +1,26 @@
+:root{
+  --bg0:#000;
+  --text:#fff;
+  --muted: rgba(255,255,255,.70);
+  --muted2: rgba(255,255,255,.55);
+
+  --green1:#8bea45;
+  --green2:#6ecf2b;
+
+  --gap: 22px;
+  --cardW: 390px;
+
+  --barH: 72px;
+
+  --glass: rgba(255,255,255,0.06);
+  --glass2: rgba(255,255,255,0.045);
+  --glassBorder: rgba(255,255,255,0.12);
+
+  --shadow: 0 30px 78px rgba(0,0,0,.78);
+  --shadowSoft: 0 18px 40px rgba(0,0,0,.58);
+
+  --radius: 18px;
+
+  /* compat: usados nos CSS novos */
+  --bg: var(--bg0);
+}

@@ -1,0 +1,105 @@
+/* ===== TOPBAR ===== */
+.topbar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--barH);
+  z-index: 50;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  padding: 0 18px;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 220ms ease;
+
+  background: rgba(0,0,0,0.18);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(14px);
+}
+
+.topbarShow{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.topbarSlot{ height: 1px; }
+
+.brandCenter{
+  justify-self: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px 10px;
+}
+
+.brandCenter img{
+  height: 40px;
+  width: auto;
+  filter: drop-shadow(0 10px 22px rgba(0,0,0,.65));
+}
+
+.topbarActions{
+  justify-self: end;
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
+.topbarBtn{
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.20);
+  color: rgba(255,255,255,0.90);
+  padding: 9px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 12px;
+  min-width: 78px;
+  text-align:center;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.topbarBtn:hover{
+  background: rgba(0,0,0,0.40);
+  border-color: rgba(255,255,255,0.22);
+  transform: translateY(-1px);
+}
+.topbarBtn:active{ transform: translateY(0); }
+
+.topbarCta{
+  text-decoration:none;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  background: linear-gradient(180deg, var(--green1), var(--green2));
+  color:#0a0a0a;
+  box-shadow: 0 14px 26px rgba(0,0,0,.55);
+  transition: transform 140ms ease, filter 140ms ease;
+}
+.topbarCta:hover{ transform: translateY(-1px); filter: brightness(1.03); }
+.topbarCta:active{ transform: translateY(0); }
+
+/* Responsivo */
+@media (max-width: 720px){
+  .topbar{
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+  }
+  .topbarSlot{ display:none; }
+  .brandCenter{ justify-self: start; }
+}
+
+@media (max-width: 620px){
+  .topbar{ padding: 0 12px; }
+  .brandCenter img{ height: 36px; }
+  .topbarBtn{ min-width: auto; padding: 9px 10px; }
+  .topbarActions{ gap: 8px; }
+}

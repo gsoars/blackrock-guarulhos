@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import "./App.css";
-import IphoneCompare from "./components/IphoneCompare";
-
+import BackgroundFx from "./components/BackgroundFx/BackgroundFx";
+import Topbar from "./components/Topbar/Topbar";
+import Hero from "./views/Hero/Hero";
+import Explore from "./views/Explore/Explore";
+import type { ExploreItem } from "./views/Explore/Explore";
+import IphoneCompare from "./features/IphoneCompare/IphoneCompare";
+import Contact from "./views/Contact/Contact";
 
 const WHATSAPP_NUMBER = "5511999999999";
 const WHATSAPP_TEXT = "Olá! Quero saber mais sobre os iPhones da Black Rock.";
@@ -10,28 +14,11 @@ function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
 }
 
-type PhoneItem = {
-  id: string;
-  title: string;
-  descTop: string;
-  descBottom: string;
-  img: string;
-  highlight: boolean;
-};
-
 export default function App() {
-  /**
-   * BASE_URL resolve corretamente em:
-   * - localhost ("/")
-   * - GitHub Pages ("/NOME-REPO/")
-   *
-   * Então imagens ficam em:
-   * `${BASE_URL}assets/...`
-   */
   const BASE = import.meta.env.BASE_URL;
   const ASSETS = `${BASE}assets/`;
 
-  const items = useMemo<PhoneItem[]>(
+  const items = useMemo<ExploreItem[]>(
     () => [
       {
         id: "17",
@@ -114,11 +101,10 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ===== Carrossel premium =====
+  // ===== Carrossel =====
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(0);
 
-  // animação por rAF (evita falhas de botão)
   const animRef = useRef({
     raf: 0 as number,
     running: false,
@@ -188,7 +174,6 @@ export default function App() {
     const el = scrollerRef.current;
     if (!el) return 0;
 
-    // primeiro card sempre destacado no começo
     if (el.scrollLeft <= 8) return 0;
 
     const cards = getCards();
@@ -211,10 +196,7 @@ export default function App() {
     return best;
   };
 
-  const scrollToCard = (
-    idx: number,
-    mode: "animate" | "instant" = "animate"
-  ) => {
+  const scrollToCard = (idx: number, mode: "animate" | "instant" = "animate") => {
     const el = scrollerRef.current;
     if (!el) return;
 
@@ -222,14 +204,12 @@ export default function App() {
     const node = cards[idx];
     if (!node) return;
 
-    // idx 0: INÍCIO REAL (não centraliza)
     if (idx === 0) {
       if (mode === "instant") el.scrollLeft = 0;
       else animateScrollTo(0, 520);
       return;
     }
 
-    // geral: centraliza
     const raw = node.offsetLeft - (el.clientWidth / 2 - node.clientWidth / 2);
     const maxLeft = Math.max(0, el.scrollWidth - el.clientWidth);
     const target = clamp(raw, 0, maxLeft);
@@ -244,26 +224,46 @@ export default function App() {
     scrollToCard(nextIdx, "animate");
   };
 
-  // atualiza active enquanto rola
+  // ===== Scroll listener: atualiza active + snap ao parar de rolar =====
+  const scrollEndTimer = useRef<number>(0);
+  const isSnapping = useRef(false);
+
+  const snapToNearest = () => {
+    if (isSnapping.current) return;
+    const idx = getActiveByNearest();
+    setActive(idx);
+    isSnapping.current = true;
+    scrollToCard(idx, "animate");
+    window.setTimeout(() => (isSnapping.current = false), 380);
+  };
+
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
 
     let raf = 0;
+
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => setActive(getActiveByNearest()));
+
+      // snap leve quando parar de rolar (não durante drag)
+      window.clearTimeout(scrollEndTimer.current);
+      scrollEndTimer.current = window.setTimeout(() => {
+        if (!drag.current.down) snapToNearest();
+      }, 140);
     };
 
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
+      window.clearTimeout(scrollEndTimer.current);
       el.removeEventListener("scroll", onScroll);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Inicialização: garante começo na esquerda (2 frames)
+  // ===== Garantir start no início =====
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -278,7 +278,7 @@ export default function App() {
     });
   }, []);
 
-  // Drag / swipe com inércia
+  // ===== Drag (pointer) =====
   const drag = useRef({
     down: false,
     startX: 0,
@@ -318,55 +318,66 @@ export default function App() {
 
     const now = performance.now();
     const dt = Math.max(16, now - drag.current.lastT);
-    const vx = (e.clientX - drag.current.lastX) / dt; // px/ms
+    const vx = (e.clientX - drag.current.lastX) / dt;
     drag.current.vel = drag.current.vel * 0.7 + vx * 0.3;
 
     drag.current.lastX = e.clientX;
     drag.current.lastT = now;
   };
 
-  const snapToNearest = () => {
-    const idx = getActiveByNearest();
-    setActive(idx);
-    scrollToCard(idx, "animate");
-  };
-
-  const onPointerUp = (e?: React.PointerEvent<HTMLDivElement>) => {
+  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     const el = scrollerRef.current;
     if (!el) return;
 
     drag.current.down = false;
     el.classList.remove("isDragging");
 
-    const v = drag.current.vel; // px/ms
-    const impulse = clamp(v * -420, -520, 520);
+    // impulso menor (menos “pulo” e menos travamento)
+    const v = drag.current.vel;
+    const impulse = clamp(v * -320, -360, 360);
 
     const maxLeft = Math.max(0, el.scrollWidth - el.clientWidth);
     const target = clamp(el.scrollLeft + impulse, 0, maxLeft);
 
-    animateScrollTo(target, 320);
-    window.setTimeout(() => snapToNearest(), 340);
+    animateScrollTo(target, 260);
+    window.setTimeout(() => snapToNearest(), 280);
 
-    // libera pointer capture se houver evento
-    if (e) el.releasePointerCapture?.(e.pointerId);
+    el.releasePointerCapture?.(e.pointerId);
   };
 
-  // Wheel no carrossel (premium e natural)
+  // ===== Wheel: NÃO travar scroll vertical da página =====
   const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     const el = scrollerRef.current;
     if (!el) return;
 
-    const delta =
-      Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    if (Math.abs(delta) < 2) return;
+    const dx = e.deltaX;
+    const dy = e.deltaY;
+
+    // Só intercepta wheel quando realmente é gesto horizontal:
+    // - trackpad horizontal (|dx| > |dy|)
+    // - ou usuário segurando Shift (wheel vertical vira horizontal)
+    const horizontalIntent = Math.abs(dx) > Math.abs(dy) || e.shiftKey;
+
+    if (!horizontalIntent) {
+      // deixa a página rolar normalmente
+      return;
+    }
 
     e.preventDefault();
     stopAnim();
+
+    const delta = Math.abs(dx) > 0 ? dx : dy;
     el.scrollLeft += delta * 1.15;
   };
 
   const onCardClick = (idx: number) => {
+    // evita “clique fantasma” ao arrastar
     if (drag.current.moved > 8) return;
+    setActive(idx);
+    scrollToCard(idx, "animate");
+  };
+
+  const onCardKeySelect = (idx: number) => {
     setActive(idx);
     scrollToCard(idx, "animate");
   };
@@ -403,389 +414,31 @@ export default function App() {
 
   return (
     <div className={`site ${headerVisible ? "isScrolled" : ""}`}>
-      <header className={`topbar ${headerVisible ? "topbarShow" : ""}`}>
-        <div className="topbarSlot" aria-hidden="true" />
+      <Topbar visible={headerVisible} assetsBase={ASSETS} waHref={waHref} onGoTo={goTo} />
 
-        <button
-          className="brandCenter"
-          type="button"
-          onClick={() => goTo("hero")}
-        >
-          <img src={`${ASSETS}logo.png`} alt="BLACK ROCK" />
-        </button>
+      <Hero assetsBase={ASSETS} waHref={waHref} onGoTo={goTo} />
 
-        <div className="topbarActions">
-          <button
-            className="topbarBtn"
-            type="button"
-            onClick={() => goTo("hero")}
-          >
-            Início
-          </button>
-          <button
-            className="topbarBtn"
-            type="button"
-            onClick={() => goTo("compare")}
-          >
-            Explorar
-          </button>
-          <a className="topbarCta" href={waHref} target="_blank" rel="noreferrer">
-            WhatsApp
-          </a>
-        </div>
-      </header>
+      <Explore
+        sectionRef={compareRef}
+        items={items}
+        active={active}
+        waHref={waHref}
+        onStep={step}
+        onCardClick={onCardClick}
+        onCardKeySelect={onCardKeySelect}
+        scrollerRef={scrollerRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onWheel={onWheel}
+      />
 
-      {/* ===== HERO ===== */}
-      <section className="hero" id="hero">
-        <div className="heroInner">
-          <img className="heroLogo" src={`${ASSETS}logo.png`} alt="BLACK ROCK" />
-
-          {/* ✅ NÃO mexe no slogan do logo. Headline é separada e única */}
-          <h1 className="heroHeadline">
-            iPhones Selecionados. Experiência Elevada.
-          </h1>
-
-          <div className="heroPhonesWrap" aria-hidden="true">
-            <img className="heroPhones" src={`${ASSETS}phones.png`} alt="" />
-          </div>
-
-          <div className="heroCtas">
-            <button
-              className="heroBtn"
-              type="button"
-              onClick={() => goTo("compare")}
-            >
-              VER NOSSA SELEÇÃO
-            </button>
-
-            <a className="heroBtnGhost" href={waHref} target="_blank" rel="noreferrer">
-              FALAR NO WHATSAPP
-            </a>
-          </div>
-
-          {/* ✅ Cards (pills) do hero — ficam colados ao CTA e bem distribuídos */}
-          <div className="heroValue" aria-label="Diferenciais Black Rock">
-            <div className="heroValueInner">
-              <article className="valueCard">
-                <div className="valueIcon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M7 7.2c1.6-1.3 3.6-2.2 5-2.2s3.4.9 5 2.2"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M6.5 9.5h11l-1 11H7.5l-1-11Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M9 9.5V8.2c0-1.7 1.4-3.2 3-3.2s3 1.5 3 3.2V9.5"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </div>
-                <div className="valueText">
-                  <strong>Modelos selecionados</strong>
-                  <span>Curadoria premium.</span>
-                </div>
-              </article>
-
-              <article className="valueCard valueCardHighlight">
-                <div className="valueIcon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M9.5 12.2l1.7 1.7 3.6-4.1"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div className="valueText">
-                  <strong>Garantia & qualidade</strong>
-                  <span>Padrão elevado.</span>
-                </div>
-              </article>
-
-              <article className="valueCard">
-                <div className="valueIcon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M3 7h11v10H3V7Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M14 10h4l3 3v4h-7v-7Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M7 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    />
-                    <path
-                      d="M18 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    />
-                  </svg>
-                </div>
-                <div className="valueText">
-                  <strong>Envio seguro</strong>
-                  <span>Atendimento rápido.</span>
-                </div>
-              </article>
-            </div>
-          </div>
-
-          <div className="heroFooter">BLACK ROCK</div>
-        </div>
-      </section>
-
-      {/* ===== COMPARE ===== */}
-      <section className="compare" id="compare" ref={compareRef}>
-        <div className="compareInner">
-          <div className="compareTop">
-            <h1 className="compareTitle">Encontre o iPhone perfeito pra você</h1>
-            <p className="compareSubtitle">
-              Navegue pelas opções e escolha o seu favorito.
-            </p>
-          </div>
-
-          {/* FULL-BLEED: garante início na esquerda da TELA */}
-          <div className="carouselFull">
-            <div className="carouselShell">
-              <button
-                className="arrow arrowLeft"
-                type="button"
-                onClick={() => step(-1)}
-                aria-label="Anterior"
-              >
-                ‹
-              </button>
-
-              <div
-                className="carousel"
-                ref={scrollerRef}
-                onPointerDown={onPointerDown}
-                onPointerMove={onPointerMove}
-                onPointerUp={onPointerUp}
-                onPointerCancel={onPointerUp}
-                onWheel={onWheel}
-                role="region"
-                aria-label="Carrossel de iPhones"
-              >
-                {items.map((p, idx) => (
-                  <article
-                    key={p.id}
-                    data-card
-                    className={[
-                      "card",
-                      idx === active ? "isActive" : "",
-                      p.highlight ? "cardHighlight" : "",
-                    ].join(" ")}
-                    onClick={() => onCardClick(idx)}
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        setActive(idx);
-                        scrollToCard(idx, "animate");
-                      }
-                    }}
-                    aria-label={`${p.title}. ${p.descTop} ${p.descBottom}`}
-                  >
-                    <div className="cardGlow" aria-hidden="true" />
-                    <div className="cardMedia">
-                      <img
-                        className="cardImg"
-                        src={p.img}
-                        alt={p.title}
-                        draggable={false}
-                      />
-                    </div>
-
-                    <div className="cardBody">
-                      <h3 className="cardTitle">{p.title}</h3>
-                      <p className="cardDesc">
-                        {p.descTop}
-                        <br />
-                        {p.descBottom}
-                      </p>
-
-                      <button
-                        className="cardCta"
-                        type="button"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        Saiba mais
-                      </button>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              <button
-                className="arrow arrowRight"
-                type="button"
-                onClick={() => step(+1)}
-                aria-label="Próximo"
-              >
-                ›
-              </button>
-            </div>
-          </div>
-
-          <div className="compareCtas">
-            <a className="whatsBtn" href={waHref} target="_blank" rel="noreferrer">
-              Falar no WhatsApp
-            </a>
-          </div>
-
-          <div className="compareFooter">BLACK ROCK</div>
-        </div>
-      </section>
       <IphoneCompare />
-      {/* ===== CONTATO ===== */}
-      <section className="contact" id="contact">
-        <div className="contactInner">
-          <h2 className="contactTitle">Contato</h2>
-          <p className="contactSubtitle">
-            Fale com a <strong>Black Rock</strong>. Respondemos o mais rápido possível
-            pelos canais abaixo.
-          </p>
 
-          <div className="contactChannels">
-            <a
-              className="contactChannel contactChannelWhats"
-              href={waHref}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="contactIcon">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
-                  alt="WhatsApp"
-                />
-              </span>
+      <Contact waHref={waHref} />
 
-              <div className="contactChannelText">
-                <strong>WhatsApp</strong>
-                <span>Atendimento rápido</span>
-              </div>
-            </a>
-
-            <a
-              className="contactChannel contactChannelIg"
-              href="https://instagram.com/blackrock.guarulhos"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="contactIcon">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/733/733558.png"
-                  alt="Instagram"
-                />
-              </span>
-
-              <div className="contactChannelText">
-                <strong>Instagram</strong>
-                <span>@BLACKROCK.GUARULHOS</span>
-              </div>
-            </a>
-          </div>
-
-          <div className="contactGrid">
-            {/* Info */}
-            <div className="contactCard">
-              <div className="contactInfoBlock">
-                <div className="contactInfoHead">WhatsApp:</div>
-                <div className="contactInfoValue">(11) 99932-2210</div>
-                <div className="contactInfoHint">Horário: Seg–Sex, 09:00 - 18:00</div>
-              </div>
-
-              <div className="contactDivider" />
-
-              <div className="contactInfoBlock">
-                <div className="contactInfoHead">Instagram</div>
-                <div className="contactInfoValue">@BLACKROCK.GUARULHOS</div>
-                <div className="contactInfoHint">Conteúdos, lançamentos e novidades.</div>
-              </div>
-
-              <div className="contactDivider" />
-
-              <div className="contactInfoBlock">
-                <div className="contactInfoHead">E-mail</div>
-                <div className="contactInfoValue">contato@seudominio.com</div>
-                <div className="contactInfoHint">Para suporte, propostas e parcerias.</div>
-              </div>
-
-              <div className="contactDivider" />
-
-              <div className="contactInfoBlock">
-                <div className="contactInfoHead">Endereço</div>
-                <div className="contactInfoValue">Shopping Internacional Guarulhos</div>
-                <div className="contactInfoHint">Rod. Pres. Dutra, Saída 225 — Loja 211</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="contactCtaBox">
-            <p className="contactCtaTitle">Quer falar pelo WhatsApp?</p>
-            <a className="contactCtaBtn" href={waHref} target="_blank" rel="noreferrer">
-              Fale conosco
-            </a>
-          </div>
-
-          <div className="contactBottom">
-            <span>© 2024 BLACK ROCK. Todos os direitos reservados.</span>
-            <span>
-              Desenvolvido por <strong>FTV Devs</strong>
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* ✅ FX BOKEH NO FUNDO */}
-      <div className="bgFx" aria-hidden="true">
-        <span className="bokeh b1" />
-        <span className="bokeh b2" />
-        <span className="bokeh b3" />
-        <span className="bokeh b4" />
-        <span className="bokeh b5" />
-        <span className="bokeh b6" />
-        <span className="bokeh b7" />
-        <span className="bokeh b8" />
-
-        <span className="spark s1" />
-        <span className="spark s2" />
-        <span className="spark s3" />
-        <span className="spark s4" />
-        <span className="spark s5" />
-        <span className="spark s6" />
-        <span className="spark s7" />
-        <span className="spark s8" />
-        <span className="spark s9" />
-        <span className="spark s10" />
-        <span className="spark s11" />
-        <span className="spark s12" />
-      </div>
+      <BackgroundFx />
     </div>
   );
 }

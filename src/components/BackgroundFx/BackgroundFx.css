@@ -1,0 +1,145 @@
+/* ===== Background FX (bokeh + sparkles) ===== */
+:root{
+  /* easing consistente (se não existir no projeto) */
+  --ease: cubic-bezier(.2,.8,.2,1);
+}
+
+.bgFx{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Bokeh “Apple-like” */
+.bokeh{
+  position: absolute;
+  inset: 0;
+
+  /* ✅ menos claro */
+  opacity: 0.65;
+}
+
+.bokehDot{
+  position: absolute;
+  border-radius: 999px;
+
+  /* ✅ menos “leitoso” */
+  filter: blur(16px);
+  mix-blend-mode: screen;
+
+  /* ✅ reduz brancos e puxa pro black/verde */
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.14), transparent 58%),
+    radial-gradient(circle at 65% 60%, rgba(25,227,139,0.12), transparent 62%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), transparent 74%);
+
+  animation:
+    bokehDrift 26s var(--ease) infinite alternate,
+    bokehBreath 10.5s var(--ease) infinite;
+
+  will-change: transform, opacity, filter;
+}
+
+/* Posições/tamanhos individuais */
+.b1{ width: 520px; height: 520px; left: -120px; top: -140px; animation-delay: -1.2s; }
+.b2{ width: 420px; height: 420px; left: 8%; top: 14%; animation-delay: -3.7s; }
+.b3{ width: 640px; height: 640px; left: 55%; top: -220px; animation-delay: -5.2s; }
+.b4{ width: 520px; height: 520px; left: 72%; top: 12%; animation-delay: -2.1s; }
+.b5{ width: 380px; height: 380px; left: 84%; top: 52%; animation-delay: -6.1s; }
+.b6{ width: 680px; height: 680px; left: 18%; top: 62%; animation-delay: -4.3s; }
+.b7{ width: 520px; height: 520px; left: 45%; top: 58%; animation-delay: -7.0s; }
+.b8{ width: 420px; height: 420px; left: -160px; top: 62%; animation-delay: -8.2s; }
+.b9{ width: 700px; height: 700px; left: 60%; top: 48%; animation-delay: -9.1s; }
+.b10{ width: 360px; height: 360px; left: 30%; top: -120px; animation-delay: -10.0s; }
+.b11{ width: 520px; height: 520px; left: 92%; top: -160px; animation-delay: -11.2s; }
+.b12{ width: 520px; height: 520px; left: 6%; top: 42%; animation-delay: -12.4s; }
+
+@keyframes bokehDrift{
+  from{ transform: translate3d(0,0,0) scale(1); }
+  to  { transform: translate3d(22px, -14px, 0) scale(1.04); }
+}
+
+@keyframes bokehBreath{
+  0%  { opacity: 0.55; filter: blur(16px); }
+  50% { opacity: 0.78; filter: blur(20px); }
+  100%{ opacity: 0.58; filter: blur(16px); }
+}
+
+/* Sparkles */
+.sparkles{
+  position: absolute;
+  inset: 0;
+
+  /* ✅ menos claro */
+  opacity: 0.75;
+}
+
+.spark{
+  position: absolute;
+
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+
+  /* ✅ menos “branco estourado” */
+  background: rgba(255,255,255,0.62);
+
+  /* ✅ glow mais forte, porém black */
+  box-shadow:
+    0 0 18px rgba(25,227,139,0.22),
+    0 0 14px rgba(255,255,255,0.22);
+
+  /* ✅ importante p/ não “travarem” visualmente */
+  transform: translate3d(0, 0, 0);
+  opacity: 0;
+
+  animation:
+    sparkRise 9.5s linear infinite,
+    sparkTwinkle 2.2s var(--ease) infinite;
+
+  will-change: transform, opacity;
+}
+
+/*
+  ✅ Correção do “travou embaixo”:
+  Em vez de usar "top" como origem (que dá sensação de preso),
+  usamos "bottom" como origem e o rise vira translateY negativo.
+*/
+.s1{ left: 6%;  bottom: -10%; animation-delay: -1.2s; }
+.s2{ left: 14%; bottom: -22%; animation-delay: -2.8s; }
+.s3{ left: 22%; bottom: -14%; animation-delay: -6.1s; }
+.s4{ left: 30%; bottom: -18%; animation-delay: -3.3s; }
+.s5{ left: 38%; bottom: -12%; animation-delay: -7.2s; }
+.s6{ left: 46%; bottom: -24%; animation-delay: -4.0s; }
+.s7{ left: 54%; bottom: -16%; animation-delay: -8.4s; }
+.s8{ left: 62%; bottom: -20%; animation-delay: -5.6s; }
+.s9{ left: 70%; bottom: -10%; animation-delay: -9.1s; }
+.s10{ left: 78%; bottom: -26%; animation-delay: -6.7s; }
+.s11{ left: 86%; bottom: -14%; animation-delay: -10.3s; }
+.s12{ left: 92%; bottom: -22%; animation-delay: -7.8s; }
+.s13{ left: 10%; bottom: -12%; animation-delay: -11.1s; }
+.s14{ left: 26%; bottom: -18%; animation-delay: -12.6s; }
+.s15{ left: 44%; bottom: -8%;  animation-delay: -13.7s; }
+.s16{ left: 58%; bottom: -16%; animation-delay: -14.2s; }
+.s17{ left: 74%; bottom: -12%; animation-delay: -15.0s; }
+.s18{ left: 88%; bottom: -8%;  animation-delay: -16.1s; }
+
+/* ✅ sobe de verdade e atravessa a tela */
+@keyframes sparkRise{
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  10%  { opacity: 0.90; }
+  70%  { opacity: 0.55; }
+  100% { transform: translate3d(0, -140vh, 0); opacity: 0; }
+}
+
+@keyframes sparkTwinkle{
+  0%, 100%{ opacity: 0.45; }
+  50%{ opacity: 1; }
+}
+
+/* Respeitar reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .bokehDot, .spark{ animation: none !important; }
+}
