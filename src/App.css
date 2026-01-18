@@ -1029,3 +1029,411 @@ body{
     transform: scale(0.82);
   }
 }
+.iphoneCompare{
+  margin: 80px auto;
+  max-width: 1100px;
+  text-align: center;
+}
+
+.compareSelectors{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  margin: 20px 0;
+}
+
+.compareSelectors select{
+  background:#111;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.2);
+  padding:10px 14px;
+  border-radius:8px;
+}
+
+.comparePhones{
+  display:grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:40px;
+  margin:30px 0;
+}
+
+.comparePhone img{
+  max-width: 240px;
+}
+
+.compareColors{
+  display:block;
+  margin-top:10px;
+  font-size:12px;
+  color:rgba(255,255,255,.6);
+}
+
+.compareTable{
+  display:grid;
+  gap:10px;
+}
+
+.compareRow{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding:12px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.compareLabel{
+  text-transform: capitalize;
+  color:rgba(255,255,255,.6);
+}
+
+/* ===== Compare iPhone (2 colunas + specs abaixo) ===== */
+.iphoneCompare{
+  width: min(1100px, 100%);
+  margin: 70px auto 0;
+  padding: 0 16px;
+}
+
+.compareTitle{
+  text-align: center;
+  font-size: 34px;
+  margin: 0 0 14px;
+  color: rgba(255,255,255,.92);
+}
+
+.compareSelectors{
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 18px 0 26px;
+  flex-wrap: wrap;
+}
+
+.compareSelectors select{
+  min-width: 220px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.90);
+  outline: none;
+}
+
+.compareTwoCols{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  align-items: start;
+}
+
+/* card de cada iPhone */
+.phoneCol{
+  border-radius: 14px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 22px 70px rgba(0,0,0,.45);
+  padding: 16px;
+}
+
+/* ✅ container que limita tamanho da imagem */
+.phoneMedia{
+  height: 260px;
+  border-radius: 14px;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.08), rgba(0,0,0,.18));
+  border: 1px solid rgba(255,255,255,.10);
+  display: grid;
+  place-items: center;
+  overflow: hidden; /* ✅ impede estourar */
+  margin-bottom: 12px;
+}
+
+.phoneImg{
+  max-height: 240px;
+  max-width: 90%;
+  object-fit: contain; /* ✅ não distorce */
+  user-select: none;
+  pointer-events: none;
+  transform: translateY(6px);
+}
+
+.phoneMeta{
+  text-align: center;
+  margin: 6px 0 12px;
+}
+
+.phoneName{
+  font-weight: 900;
+  letter-spacing: .02em;
+  color: rgba(255,255,255,.92);
+}
+
+.phoneColors{
+  margin-top: 6px;
+  font-size: 12px;
+  color: rgba(255,255,255,.55);
+}
+
+/* specs abaixo */
+.phoneSpecs{
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.specRow{
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.specLabel{
+  font-size: 12px;
+  color: rgba(255,255,255,.55);
+  line-height: 1.2;
+}
+
+.specValue{
+  font-size: 13px;
+  color: rgba(255,255,255,.88);
+  line-height: 1.25;
+}
+
+/* responsivo */
+@media (max-width: 920px){
+  .compareTwoCols{
+    grid-template-columns: 1fr;
+  }
+  .specRow{
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================
+   iPhone Compare — Premium
+========================= */
+
+.iphoneCompare{
+  width: min(1150px, 100%);
+  margin: 80px auto 0;
+  padding: 0 18px 20px;
+  position: relative;
+}
+
+.iphoneCompare::before{
+  content:"";
+  position:absolute;
+  inset: -40px -20px auto -20px;
+  height: 220px;
+  background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.10), transparent 60%);
+  filter: blur(8px);
+  pointer-events:none;
+}
+
+.compareTitle{
+  text-align: center;
+  font-size: 40px;
+  margin: 0 0 10px;
+  letter-spacing: .02em;
+  color: rgba(255,255,255,.94);
+}
+
+.compareTitle::after{
+  content:"";
+  display:block;
+  width: 88px;
+  height: 3px;
+  margin: 12px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(148,211,110,.75), transparent);
+}
+
+.compareSelectors{
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 18px 0 28px;
+  flex-wrap: wrap;
+}
+
+.compareSelectors select{
+  min-width: 240px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.92);
+  outline: none;
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+
+.compareSelectors select:hover{
+  transform: translateY(-1px);
+  border-color: rgba(148,211,110,.22);
+  background: rgba(255,255,255,.06);
+}
+
+.compareTwoCols{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+/* Card premium */
+.phoneCol{
+  position: relative;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,.08), transparent 55%),
+    rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.11);
+  box-shadow: 0 26px 80px rgba(0,0,0,.55);
+  padding: 18px;
+  overflow: hidden;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.phoneCol::before{
+  content:"";
+  position:absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(148,211,110,.10), transparent 60%);
+  opacity: 0;
+  transition: opacity .18s ease;
+  pointer-events:none;
+}
+
+.phoneCol:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.18);
+  box-shadow: 0 30px 90px rgba(0,0,0,.65);
+}
+
+.phoneCol:hover::before{
+  opacity: 1;
+}
+
+/* Um leve “brilho” diferente em cada lado */
+.phoneColLeft{
+  box-shadow: 0 26px 80px rgba(0,0,0,.55), 0 0 40px rgba(148,211,110,.06);
+}
+.phoneColRight{
+  box-shadow: 0 26px 80px rgba(0,0,0,.55), 0 0 40px rgba(255,255,255,.04);
+}
+
+/* Container da imagem (não estoura) */
+.phoneMedia{
+  height: 280px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.10), rgba(0,0,0,.20)),
+    linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.12));
+  border: 1px solid rgba(255,255,255,.12);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.40) inset;
+}
+
+.phoneImg{
+  max-height: 260px;
+  max-width: 92%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  transform: translateY(10px);
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,.55));
+  transition: transform .18s ease;
+}
+
+.phoneCol:hover .phoneImg{
+  transform: translateY(6px) scale(1.01);
+}
+
+.phoneMeta{
+  text-align: center;
+  margin: 8px 0 14px;
+}
+
+.phoneName{
+  font-weight: 950;
+  letter-spacing: .02em;
+  font-size: 18px;
+  color: rgba(255,255,255,.94);
+}
+
+.phoneBadge{
+  display: inline-flex;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .03em;
+  color: rgba(255,255,255,.92);
+  border: 1px solid rgba(148,211,110,.26);
+  background: rgba(148,211,110,.10);
+}
+
+.phoneColors{
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(255,255,255,.56);
+}
+
+/* Specs: viram “chips” premium */
+.phoneSpecs{
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.specRow{
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.09);
+  transition: border-color .15s ease, transform .15s ease, background .15s ease;
+}
+
+.specRow:hover{
+  border-color: rgba(148,211,110,.20);
+  background: rgba(0,0,0,.22);
+  transform: translateY(-1px);
+}
+
+.specLabel{
+  font-size: 12px;
+  color: rgba(255,255,255,.58);
+  line-height: 1.2;
+}
+
+.specValue{
+  font-size: 13px;
+  color: rgba(255,255,255,.90);
+  line-height: 1.25;
+}
+
+/* Mobile */
+@media (max-width: 920px){
+  .compareTwoCols{ grid-template-columns: 1fr; }
+  .compareTitle{ font-size: 32px; }
+  .specRow{ grid-template-columns: 1fr; }
+  .phoneMedia{ height: 250px; }
+  .phoneImg{ max-height: 230px; }
+}
+
+.compareSelectors select{
+  color-scheme: dark; /* tenta deixar o dropdown nativo em dark */
+}
+
+.compareSelectors select option{
+  background: #111;
+  color: #fff;
+}

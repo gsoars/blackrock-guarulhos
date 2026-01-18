@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
+import IphoneCompare from "./components/IphoneCompare";
+
 
 const WHATSAPP_NUMBER = "5511999999999";
 const WHATSAPP_TEXT = "Olá! Quero saber mais sobre os iPhones da Black Rock.";
@@ -659,7 +661,7 @@ export default function App() {
           <div className="compareFooter">BLACK ROCK</div>
         </div>
       </section>
-
+      <IphoneCompare />
       {/* ===== CONTATO ===== */}
       <section className="contact" id="contact">
         <div className="contactInner">
