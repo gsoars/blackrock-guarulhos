@@ -16,6 +16,8 @@ type Props = {
   active: number;
   waHref: string;
 
+  onLearnMore: (item: ExploreItem) => void;
+
   onStep: (dir: number) => void;
   onCardClick: (idx: number) => void;
   onCardKeySelect: (idx: number) => void;
@@ -33,6 +35,7 @@ export default function Explore({
   items,
   active,
   waHref,
+  onLearnMore,
   onStep,
   onCardClick,
   onCardKeySelect,
@@ -115,7 +118,13 @@ export default function Explore({
                     <button
                       className="cardCta"
                       type="button"
-                      onClick={(e) => e.preventDefault()}
+                      // ✅ Blindagem: evita que o pointerdown do botão dispare drag no container
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onLearnMore(p);
+                      }}
                     >
                       Saiba mais
                     </button>
