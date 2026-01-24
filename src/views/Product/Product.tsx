@@ -368,7 +368,6 @@ export default function Product() {
                       onClick={() => pickModel(m)}
                     >
                       <div className="pPg__modelName">{m.label}</div>
-                      <div className="pPg__modelMeta">Imagem inicial</div>
                     </button>
                   );
                 })}
