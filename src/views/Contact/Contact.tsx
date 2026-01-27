@@ -50,7 +50,7 @@ export default function Contact({ waHref }: Props) {
 
             <div className="contactChannelText">
               <strong>Instagram</strong>
-              <span>@BLACKROCK.GUARULHOS</span>
+              <span>@Blackrock.guarulhos</span>
             </div>
           </a>
         </div>
@@ -59,7 +59,7 @@ export default function Contact({ waHref }: Props) {
           <div className="contactCard">
             <div className="contactInfoBlock">
               <div className="contactInfoHead">WhatsApp:</div>
-              <div className="contactInfoValue">(11) 99932-2210</div>
+              <div className="contactInfoValue">(11) 91894-2427</div>
               <div className="contactInfoHint">
                 Horário: Seg–Sex, 09:00 - 18:00
               </div>
@@ -69,7 +69,7 @@ export default function Contact({ waHref }: Props) {
 
             <div className="contactInfoBlock">
               <div className="contactInfoHead">Instagram</div>
-              <div className="contactInfoValue">@BLACKROCK.GUARULHOS</div>
+              <div className="contactInfoValue">@Blackrock.guarulhos</div>
               <div className="contactInfoHint">
                 Conteúdos, lançamentos e novidades.
               </div>
@@ -79,7 +79,7 @@ export default function Contact({ waHref }: Props) {
 
             <div className="contactInfoBlock">
               <div className="contactInfoHead">E-mail</div>
-              <div className="contactInfoValue">contato@seudominio.com</div>
+              <div className="contactInfoValue">blackrockphone@gmail.com</div>
               <div className="contactInfoHint">
                 Para suporte, propostas e parcerias.
               </div>
@@ -90,10 +90,10 @@ export default function Contact({ waHref }: Props) {
             <div className="contactInfoBlock">
               <div className="contactInfoHead">Endereço</div>
               <div className="contactInfoValue">
-                Shopping Internacional Guarulhos
+                Prédio comercial
               </div>
               <div className="contactInfoHint">
-                Rod. Pres. Dutra, Saída 225 — Loja 211
+                R. Silvestre Vasconcelos Calmon, 51 - Sala 615/6º andar - Vila Moreira, Guarulhos - SP, 07020-001
               </div>
             </div>
           </div>

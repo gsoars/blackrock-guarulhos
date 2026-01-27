@@ -13,18 +13,29 @@ export default function Hero({ assetsBase, waHref, onGoTo }: Props) {
       <div className="heroInner">
         <img className="heroLogo" src={`${assetsBase}logo.png`} alt="BLACK ROCK" />
 
-        <h1 className="heroHeadline">iPhones Selecionados. Experiência Elevada.</h1>
+        <h1 className="heroHeadline">
+          iPhones Selecionados. Experiência Elevada.
+        </h1>
 
         <div className="heroPhonesWrap" aria-hidden="true">
           <img className="heroPhones" src={`${assetsBase}phones.png`} alt="" />
         </div>
 
         <div className="heroCtas">
-          <button className="heroBtn" type="button" onClick={() => onGoTo("compare")}>
+          <button
+            className="heroBtn"
+            type="button"
+            onClick={() => onGoTo("compare")}
+          >
             VER NOSSA SELEÇÃO
           </button>
 
-          <a className="heroBtnGhost" href={waHref} target="_blank" rel="noreferrer">
+          <a
+            className="heroBtnGhost"
+            href={waHref}
+            target="_blank"
+            rel="noreferrer"
+          >
             FALAR NO WHATSAPP
           </a>
         </div>
@@ -84,36 +95,17 @@ export default function Hero({ assetsBase, waHref, onGoTo }: Props) {
               </div>
             </article>
 
+            {/* ⬇️ AQUI FOI A ÚNICA ALTERAÇÃO */}
             <article className="valueCard">
               <div className="valueIcon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M3 7h11v10H3V7Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M14 10h4l3 3v4h-7v-7Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M7 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M18 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
+                <img
+                  src={`${assetsBase}envio.png`}
+                  alt=""
+                />
               </div>
               <div className="valueText">
-                <strong>Envio seguro</strong>
-                <span>Atendimento rápido.</span>
+                <strong>Localização privilegiada</strong>
+                <span>Seu atendimento no melhor local</span>
               </div>
             </article>
           </div>

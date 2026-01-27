@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
-import IphoneCompare from "./components/IphoneCompare";
+import IphoneCompare from "../../features/IphoneCompare/IphoneCompare";
+
+
 
 
 const WHATSAPP_NUMBER = "5511999999999";

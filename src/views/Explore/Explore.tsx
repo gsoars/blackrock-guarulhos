@@ -99,12 +99,13 @@ export default function Explore({
                 >
                   <div className="cardGlow" aria-hidden="true" />
                   <div className="cardMedia">
-                    <img
-                      className="cardImg"
-                      src={p.img}
-                      alt={p.title}
-                      draggable={false}
-                    />
+                 <img
+                    className={`cardImg ${p.id === "16" ? "cardImgLarge" : ""}`}
+                    src={p.img}
+                    alt={p.title}
+                    draggable={false}
+                  />
+
                   </div>
 
                   <div className="cardBody">

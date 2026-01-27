@@ -7,6 +7,11 @@
   overflow:hidden;
 }
 
+.cardImgLarge{
+  transform: scale(1.25);
+}
+
+
 /* ✅ removido compare::after para não criar faixa entre seções */
 
 .compareInner{

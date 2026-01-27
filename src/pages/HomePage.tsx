@@ -7,8 +7,10 @@ import Explore from "../views/Explore/Explore";
 import type { ExploreItem } from "../views/Explore/Explore";
 import IphoneCompare from "../features/IphoneCompare/IphoneCompare";
 import Contact from "../views/Contact/Contact";
+import iphone16 from "../assets/apple-iphone-16-new.png";
 
-const WHATSAPP_NUMBER = "5511999999999";
+
+const WHATSAPP_NUMBER = "5511918942427";
 const WHATSAPP_TEXT = "Olá! Quero saber mais sobre os iPhones da Black Rock.";
 
 function clamp(n: number, min: number, max: number) {
@@ -36,7 +38,7 @@ export default function HomePage() {
         title: "iPhone 16",
         descTop: "Velocidade e eficiência.",
         descBottom: "Câmera que impressiona.",
-        img: `${ASSETS}iphone-16.png`,
+        img:  iphone16,
         highlight: false,
       },
       {

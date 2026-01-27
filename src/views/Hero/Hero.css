@@ -278,3 +278,15 @@
   .heroPhones{ max-height: min(30svh, 340px); }
   .heroInner{ padding-top: calc(env(safe-area-inset-top, 0px) + 16px); }
 }
+.valueIcon {
+  display: flex;
+  align-items: center;    /* centro vertical */
+  justify-content: center; /* centro horizontal */
+}
+
+.valueIcon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
