@@ -112,9 +112,9 @@ export default function Contact({ waHref }: Props) {
         </div>
 
         <div className="contactBottom">
-          <span>© 2024 BLACK ROCK. Todos os direitos reservados.</span>
+          <span>© 2026 BLACK ROCK. Todos os direitos reservados.</span>
           <span>
-            Desenvolvido por <strong>FTV Devs</strong>
+            Desenvolvido por <strong>Nexum Tecnologia</strong>
           </span>
         </div>
       </div>

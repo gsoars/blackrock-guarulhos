@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import BackgroundFx from "../../components/BackgroundFx/BackgroundFx";
@@ -173,6 +173,25 @@ function pickVividHex(label: string) {
   return "";
 }
 
+function hasTouchSupport() {
+  return (
+    "ontouchstart" in window ||
+    (navigator as any).maxTouchPoints > 0 ||
+    (navigator as any).msMaxTouchPoints > 0
+  );
+}
+
+type ImgBox = {
+  cw: number;
+  ch: number;
+  iw: number;
+  ih: number;
+  ox: number;
+  oy: number;
+  nw: number;
+  nh: number;
+};
+
 export default function Product() {
   const navigate = useNavigate();
   const { family: familyParam } = useParams();
@@ -283,8 +302,131 @@ export default function Product() {
     setSp(next, { replace: false });
   };
 
-  // Logo-only (ajuste aqui se o nome for diferente)
   const logoSrc = `${ASSETS}logo.png`;
+
+  /** -------------------- LUPA CORRETA (contain-aware) -------------------- */
+  const frameRef = useRef<HTMLDivElement | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  const [touch, setTouch] = useState(false);
+  const [magOn, setMagOn] = useState(false);
+
+  const [imgBox, setImgBox] = useState<ImgBox | null>(null);
+  const [cursorInImg, setCursorInImg] = useState({ x: 0, y: 0 });
+
+  const MAG_ZOOM = 2.35;
+  const MAG_SIZE = 210;
+
+  useEffect(() => {
+    setTouch(hasTouchSupport());
+  }, []);
+
+  const computeImgBox = useCallback(() => {
+    const frame = frameRef.current;
+    const img = imgRef.current;
+    if (!frame || !img) return;
+
+    const rect = frame.getBoundingClientRect();
+    const cw = rect.width;
+    const ch = rect.height;
+
+    const nw = img.naturalWidth || 0;
+    const nh = img.naturalHeight || 0;
+    if (!nw || !nh || !cw || !ch) return;
+
+    const scale = Math.min(cw / nw, ch / nh);
+    const iw = nw * scale;
+    const ih = nh * scale;
+    const ox = (cw - iw) / 2;
+    const oy = (ch - ih) / 2;
+
+    setImgBox({ cw, ch, iw, ih, ox, oy, nw, nh });
+  }, []);
+
+  useEffect(() => {
+    setMagOn(false);
+    setCursorInImg({ x: 0, y: 0 });
+
+    const onResize = () => computeImgBox();
+    window.addEventListener("resize", onResize);
+    const t = window.setTimeout(() => computeImgBox(), 0);
+
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [heroImageUrl, computeImgBox]);
+
+  const clamp = (v: number, min: number, max: number) =>
+    Math.max(min, Math.min(max, v));
+
+  const updateCursor = (clientX: number, clientY: number) => {
+    const frame = frameRef.current;
+    const box = imgBox;
+    if (!frame || !box) return;
+
+    const rect = frame.getBoundingClientRect();
+    const cx = clientX - rect.left;
+    const cy = clientY - rect.top;
+
+    const xInImg = clamp(cx - box.ox, 0, box.iw);
+    const yInImg = clamp(cy - box.oy, 0, box.ih);
+
+    setCursorInImg({ x: xInImg, y: yInImg });
+  };
+
+  const onEnter = (e: React.MouseEvent) => {
+    if (touch || !heroImageUrl) return;
+    computeImgBox();
+    updateCursor(e.clientX, e.clientY);
+    setMagOn(true);
+  };
+
+  const onMove = (e: React.MouseEvent) => {
+    if (touch || !magOn || !heroImageUrl) return;
+    updateCursor(e.clientX, e.clientY);
+  };
+
+  const onLeave = () => {
+    if (touch) return;
+    setMagOn(false);
+  };
+
+  const lensStyle = useMemo(() => {
+    const box = imgBox;
+    if (!box || !heroImageUrl) return undefined;
+
+    const bgW = box.iw * MAG_ZOOM;
+    const bgH = box.ih * MAG_ZOOM;
+
+    const bgX = -(cursorInImg.x * MAG_ZOOM - MAG_SIZE / 2);
+    const bgY = -(cursorInImg.y * MAG_ZOOM - MAG_SIZE / 2);
+
+    const minX = -(bgW - MAG_SIZE);
+    const minY = -(bgH - MAG_SIZE);
+
+    const clampedBgX = clamp(bgX, minX, 0);
+    const clampedBgY = clamp(bgY, minY, 0);
+
+    const lensLeft = box.ox + cursorInImg.x - MAG_SIZE / 2;
+    const lensTop = box.oy + cursorInImg.y - MAG_SIZE / 2;
+
+    const left = clamp(lensLeft, 0, Math.max(0, box.cw - MAG_SIZE));
+    const top = clamp(lensTop, 0, Math.max(0, box.ch - MAG_SIZE));
+
+    return {
+      width: `${MAG_SIZE}px`,
+      height: `${MAG_SIZE}px`,
+      left: `${left}px`,
+      top: `${top}px`,
+      backgroundImage: `url("${heroImageUrl}")`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: `${bgW}px ${bgH}px`,
+      backgroundPosition: `${clampedBgX}px ${clampedBgY}px`,
+    } as React.CSSProperties;
+  }, [imgBox, heroImageUrl, cursorInImg.x, cursorInImg.y]);
+
+  // ----------------------------------------------------------------------
 
   if (!family) {
     return (
@@ -300,7 +442,6 @@ export default function Product() {
     );
   }
 
-  // ✅ data-family habilita CSS condicional (ex.: não exagerar nos iPhone 17)
   return (
     <div className="pPg" data-family={family.family}>
       <BackgroundFx />
@@ -309,8 +450,9 @@ export default function Product() {
         <button
           className="pPg__back"
           type="button"
-          onClick={() => navigate(-1)}
-          aria-label="Voltar"
+          /* ✅ Voltar direto para o carrossel (que já tem id="compare") */
+          onClick={() => navigate("/#compare")}
+          aria-label="Voltar para o carrossel"
         >
           ←
         </button>
@@ -332,11 +474,30 @@ export default function Product() {
           <div className="pPg__visual">
             <div className="pPg__frame">
               {heroImageUrl ? (
-                <img
-                  className="pPg__phone pPg__phone--mega"
-                  src={heroImageUrl}
-                  alt="iPhone selecionado"
-                />
+                <div
+                  ref={frameRef}
+                  className="pPg__mag"
+                  onMouseEnter={onEnter}
+                  onMouseMove={onMove}
+                  onMouseLeave={onLeave}
+                >
+                  <img
+                    ref={imgRef}
+                    className="pPg__phone pPg__phone--mega"
+                    src={heroImageUrl}
+                    alt="iPhone selecionado"
+                    draggable={false}
+                    onLoad={computeImgBox}
+                  />
+
+                  {!touch && (
+                    <div
+                      className={`pPg__lens ${magOn ? "isOn" : "isOff"}`}
+                      style={lensStyle}
+                      aria-hidden="true"
+                    />
+                  )}
+                </div>
               ) : (
                 <div className="pPg__placeholder" />
               )}
@@ -387,12 +548,11 @@ export default function Product() {
                   const baseHex = selectedModel ? getBaseHex(selectedModel.key, c) : "";
                   const vividHex = pickVividHex(c.label);
 
-                  // Se base estiver ausente ou clara/pastel demais, usamos vivid por nome
                   const baseLum = baseHex ? luminance(baseHex) : 0;
                   const shouldUseVivid = !baseHex || baseLum > 215;
 
                   const hex = shouldUseVivid ? (vividHex || baseHex) : baseHex;
-                  const finalHex = hex || "#9FA3A8"; // fallback seguro
+                  const finalHex = hex || "#9FA3A8";
 
                   const lum = luminance(finalHex);
                   const isLight = lum > 220;
@@ -420,7 +580,7 @@ export default function Product() {
             </div>
 
             <div className="pPg__actions">
-              <button className="pPg__btn" type="button" onClick={() => navigate("/")}>
+              <button className="pPg__btn" type="button" onClick={() => navigate("/#compare")}>
                 Ver outros iPhones
               </button>
             </div>

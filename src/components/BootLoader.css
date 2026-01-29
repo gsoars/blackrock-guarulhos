@@ -1,0 +1,38 @@
+.bootLoader{
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+
+  background: #000;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+
+.bootLoader.isVisible{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.bootLoader.isHidden{
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.bootLoaderLogo{
+  width: min(220px, 56vw);
+  height: auto;
+  display: block;
+
+  /* “Piscando” com cara de loading */
+  animation: bootPulse 1.05s ease-in-out infinite;
+  transform: translateZ(0);
+}
+
+@keyframes bootPulse{
+  0%   { opacity: .25; filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+  50%  { opacity: 1;  filter: drop-shadow(0 0 18px rgba(255,255,255,.16)); }
+  100% { opacity: .25; filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+}
