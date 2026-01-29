@@ -455,3 +455,12 @@
     transform: scale(1.12);
   }
 }
+/* Esconde o ponteiro quando a lupa estiver ativa */
+.pPg__mag.isMagnifying{
+  cursor: none;
+}
+
+/* garante que a imagem não force cursor próprio */
+.pPg__mag.isMagnifying *{
+  cursor: none !important;
+}

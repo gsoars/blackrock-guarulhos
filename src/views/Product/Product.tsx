@@ -475,11 +475,11 @@ export default function Product() {
             <div className="pPg__frame">
               {heroImageUrl ? (
                 <div
-                  ref={frameRef}
-                  className="pPg__mag"
-                  onMouseEnter={onEnter}
-                  onMouseMove={onMove}
-                  onMouseLeave={onLeave}
+                   ref={frameRef}
+                   className={`pPg__mag ${magOn ? "isMagnifying" : ""}`}
+                   onMouseEnter={onEnter}
+                   onMouseMove={onMove}
+                   onMouseLeave={onLeave}
                 >
                   <img
                     ref={imgRef}
