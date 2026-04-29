@@ -7,8 +7,14 @@
   overflow:hidden;
 }
 
-/* ✅ removido hero::after para não criar faixa entre seções */
+/* ===== VARIÁVEIS DOURADO ===== */
+:root {
+  --gold1: #d4af37;
+  --gold2: #b8962e;
+  --gold3: #f5d76e;
+}
 
+/* ===== CONTAINER ===== */
 .heroInner{
   width: min(1060px, 100%);
   min-height: 100svh;
@@ -25,7 +31,7 @@
   gap: 10px;
 }
 
-/* Logo do arquivo (mantém slogan dentro do PNG) */
+/* ===== LOGO ===== */
 .heroLogo{
   width: clamp(150px, 12vw, 230px);
   height: auto;
@@ -39,6 +45,7 @@
   transform: translateY(-10px) scale(0.96);
 }
 
+/* ===== TEXTO ===== */
 .heroHeadline{
   margin: 0;
   text-align: center;
@@ -52,6 +59,7 @@
   margin-bottom: 30px;
 }
 
+/* ===== IMAGEM ===== */
 .heroPhonesWrap{
   width: min(820px, 78vw);
   margin-top: 28px;
@@ -68,9 +76,9 @@
   bottom: 10%;
   height: clamp(170px, 24svh, 360px);
   border-radius: 999px;
-  background: radial-gradient(closest-side, rgba(139,234,69,0.10), transparent 72%);
+  background: radial-gradient(closest-side, rgba(212,175,55,0.12), transparent 72%);
   filter: blur(28px);
-  opacity: .55;
+  opacity: .6;
 }
 
 .heroPhones{
@@ -84,6 +92,7 @@
   pointer-events:none;
 }
 
+/* ===== BOTÕES ===== */
 .heroCtas{
   margin-top: 22px;
   display:flex;
@@ -99,19 +108,36 @@
   border:none;
   border-radius: 12px;
   cursor:pointer;
-  background: linear-gradient(180deg, var(--green1), var(--green2));
+
+  background: linear-gradient(
+    180deg,
+    var(--gold3) 0%,
+    var(--gold1) 40%,
+    var(--gold2) 100%
+  );
+
   color:#0a0a0a;
   font-weight: 900;
   letter-spacing: .12em;
   text-transform: uppercase;
+
   box-shadow:
     0 18px 36px rgba(0,0,0,.62),
-    0 0 0 1px rgba(0,0,0,.35) inset;
+    0 0 0 1px rgba(0,0,0,.35) inset,
+    0 0 18px rgba(212,175,55,0.25);
+
   transition: transform 140ms ease, filter 140ms ease;
   min-width: 240px;
 }
-.heroBtn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
-.heroBtn:active{ transform: translateY(0); }
+
+.heroBtn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.heroBtn:active{
+  transform: translateY(0);
+}
 
 .heroBtnGhost{
   text-decoration:none;
@@ -122,20 +148,27 @@
   text-transform: uppercase;
   font-size: 12px;
   color: rgba(255,255,255,0.92);
+
   background: rgba(0,0,0,0.20);
-  border: 1px solid rgba(255,255,255,0.14);
+  border: 1px solid rgba(212,175,55,0.25);
+
   box-shadow: 0 18px 36px rgba(0,0,0,.45);
   transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
   min-width: 220px;
   text-align:center;
 }
+
 .heroBtnGhost:hover{
   transform: translateY(-1px);
   background: rgba(0,0,0,0.32);
-  border-color: rgba(255,255,255,0.20);
+  border-color: rgba(212,175,55,0.45);
 }
-.heroBtnGhost:active{ transform: translateY(0); }
 
+.heroBtnGhost:active{
+  transform: translateY(0);
+}
+
+/* ===== CARDS ===== */
 .heroValue{
   width: 100%;
   display:flex;
@@ -173,10 +206,13 @@
 }
 
 .valueCardHighlight{
-  border-color: rgba(139,234,69,0.22);
-  box-shadow: 0 18px 54px rgba(0,0,0,.62), 0 0 0 1px rgba(139,234,69,0.08) inset;
+  border-color: rgba(212,175,55,0.35);
+  box-shadow:
+    0 18px 54px rgba(0,0,0,.62),
+    0 0 0 1px rgba(212,175,55,0.15) inset;
 }
 
+/* ===== RESTO ===== */
 .valueIcon{
   width: 42px;
   height: 42px;

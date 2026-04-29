@@ -7,8 +7,14 @@
   overflow:hidden;
 }
 
-/* ✅ removido hero::after para não criar faixa entre seções */
+/* ===== VARIÁVEIS ===== */
+:root{
+  --gold1: #d4af37;
+  --gold2: #b8962e;
+  --gold3: #f5d76e;
+}
 
+/* ===== CONTAINER ===== */
 .heroInner{
   width: min(1060px, 100%);
   min-height: 100svh;
@@ -25,7 +31,7 @@
   gap: 10px;
 }
 
-/* Logo do arquivo (mantém slogan dentro do PNG) */
+/* ===== LOGO ===== */
 .heroLogo{
   width: clamp(150px, 12vw, 230px);
   height: auto;
@@ -39,6 +45,7 @@
   transform: translateY(-10px) scale(0.96);
 }
 
+/* ===== TEXTO ===== */
 .heroHeadline{
   margin: 0;
   text-align: center;
@@ -52,6 +59,7 @@
   margin-bottom: 30px;
 }
 
+/* ===== IMAGEM ===== */
 .heroPhonesWrap{
   width: min(820px, 78vw);
   margin-top: 28px;
@@ -68,9 +76,16 @@
   bottom: 10%;
   height: clamp(170px, 24svh, 360px);
   border-radius: 999px;
-  background: radial-gradient(closest-side, rgba(139,234,69,0.10), transparent 72%);
+
+  /* 🔥 dourado no glow */
+  background: radial-gradient(
+    closest-side,
+    rgba(212,175,55,0.12),
+    transparent 72%
+  );
+
   filter: blur(28px);
-  opacity: .55;
+  opacity: .6;
 }
 
 .heroPhones{
@@ -84,6 +99,7 @@
   pointer-events:none;
 }
 
+/* ===== BOTÕES ===== */
 .heroCtas{
   margin-top: 22px;
   display:flex;
@@ -93,25 +109,52 @@
   flex-wrap: wrap;
   width: 100%;
 }
-
 .heroBtn{
   padding: 12px 26px;
-  border:none;
+  border: none;
   border-radius: 12px;
-  cursor:pointer;
-  background: linear-gradient(180deg, var(--green1), var(--green2));
-  color:#0a0a0a;
+  cursor: pointer;
+
+  /* ✨ dourado mais refinado */
+  background: linear-gradient(
+    180deg,
+    #f6e6a8 0%,
+    #e4c96a 45%,
+    #caa84a 100%
+  );
+
+  color: #1a1a1a;
+
   font-weight: 900;
   letter-spacing: .12em;
   text-transform: uppercase;
+
+  /* glow + profundidade */
   box-shadow:
-    0 18px 36px rgba(0,0,0,.62),
-    0 0 0 1px rgba(0,0,0,.35) inset;
-  transition: transform 140ms ease, filter 140ms ease;
+    0 10px 24px rgba(0,0,0,.5),
+    0 0 0 1px rgba(255,255,255,.08) inset,
+    0 2px 6px rgba(255,215,130,.25);
+
+  transition: transform 140ms ease, filter 140ms ease, box-shadow 140ms ease;
+
   min-width: 240px;
 }
-.heroBtn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
-.heroBtn:active{ transform: translateY(0); }
+
+/* hover mais elegante (não exagerado) */
+.heroBtn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 14px 28px rgba(0,0,0,.6),
+    0 0 0 1px rgba(255,255,255,.10) inset,
+    0 4px 10px rgba(255,215,130,.30);
+}
+
+.heroBtn:active{
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
 
 .heroBtnGhost{
   text-decoration:none;
@@ -122,20 +165,29 @@
   text-transform: uppercase;
   font-size: 12px;
   color: rgba(255,255,255,0.92);
+
   background: rgba(0,0,0,0.20);
-  border: 1px solid rgba(255,255,255,0.14);
+
+  /* 🔥 borda dourada */
+  border: 1px solid rgba(212,175,55,0.25);
+
   box-shadow: 0 18px 36px rgba(0,0,0,.45);
   transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
   min-width: 220px;
   text-align:center;
 }
+
 .heroBtnGhost:hover{
   transform: translateY(-1px);
   background: rgba(0,0,0,0.32);
-  border-color: rgba(255,255,255,0.20);
+  border-color: rgba(212,175,55,0.45);
 }
-.heroBtnGhost:active{ transform: translateY(0); }
 
+.heroBtnGhost:active{
+  transform: translateY(0);
+}
+
+/* ===== CARDS ===== */
 .heroValue{
   width: 100%;
   display:flex;
@@ -172,30 +224,34 @@
   background: rgba(0,0,0,0.48);
 }
 
+/* 🔥 destaque dourado */
 .valueCardHighlight{
-  border-color: rgba(139,234,69,0.22);
-  box-shadow: 0 18px 54px rgba(0,0,0,.62), 0 0 0 1px rgba(139,234,69,0.08) inset;
+  border-color: rgba(212,175,55,0.35);
+  box-shadow:
+    0 18px 54px rgba(0,0,0,.62),
+    0 0 0 1px rgba(212,175,55,0.15) inset;
 }
 
+/* ===== ICONES ===== */
 .valueIcon{
   width: 42px;
   height: 42px;
   border-radius: 14px;
-  display:grid;
-  place-items:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
   background: rgba(0,0,0,0.28);
   border: 1px solid rgba(255,255,255,0.10);
-  color: rgba(255,255,255,0.92);
-  flex: 0 0 auto;
 }
 
-.valueIcon svg{
-  width: 22px;
-  height: 22px;
-  opacity: .92;
-  filter: drop-shadow(0 10px 22px rgba(0,0,0,.55));
+.valueIcon img{
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 
+/* ===== TEXTO ===== */
 .valueText{
   display:flex;
   flex-direction: column;
@@ -206,87 +262,18 @@
 .valueText strong{
   font-size: 12px;
   font-weight: 900;
-  letter-spacing: .01em;
   color: rgba(255,255,255,0.95);
 }
 
 .valueText span{
   font-size: 12px;
   color: rgba(255,255,255,0.58);
-  line-height: 1.2;
 }
 
+/* ===== FOOTER ===== */
 .heroFooter{
   margin-top: 8px;
   letter-spacing: .20em;
   font-weight: 800;
   color: rgba(255,255,255,0.86);
 }
-
-@media (max-width: 980px){
-  .heroPhonesWrap{ width: min(780px, 84vw); }
-  .heroPhones{ max-height: min(34svh, 400px); }
-}
-
-@media (max-width: 820px){
-  .heroValueInner{ grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 620px){
-  .heroInner{
-    padding:
-      calc(env(safe-area-inset-top, 0px) + 14px)
-      14px
-      16px;
-    gap: 8px;
-  }
-
-  .heroLogo{ width: clamp(140px, 44vw, 210px); }
-
-  .heroHeadline{
-    font-size: clamp(18px, 6vw, 24px);
-    line-height: 1.12;
-  }
-
-  .heroPhonesWrap{
-    width: 100%;
-    margin-top: 0;
-  }
-
-  .heroPhones{
-    max-height: min(30svh, 300px);
-    transform: translateY(-4px);
-  }
-
-  .heroBtn, .heroBtnGhost{
-    width: 100%;
-    min-width: 0;
-  }
-
-  .heroValue{ margin-top: 8px; }
-
-  .heroValueInner{
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .heroLogo{ margin-top: -12px; }
-  .heroPhones{ transform: scale(0.82); }
-}
-
-@media (max-height: 740px){
-  .heroPhones{ max-height: min(30svh, 340px); }
-  .heroInner{ padding-top: calc(env(safe-area-inset-top, 0px) + 16px); }
-}
-.valueIcon {
-  display: flex;
-  align-items: center;    /* centro vertical */
-  justify-content: center; /* centro horizontal */
-}
-
-.valueIcon img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-}
-

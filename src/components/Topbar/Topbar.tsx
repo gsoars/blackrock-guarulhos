@@ -1,5 +1,7 @@
 import React from "react";
 import "./Topbar.css";
+import logo from "../../assets/logo_lume.png";
+
 
 type Props = {
   visible: boolean;
@@ -14,7 +16,7 @@ export default function Topbar({ visible, assetsBase, waHref, onGoTo }: Props) {
       <div className="topbarSlot" aria-hidden="true" />
 
       <button className="brandCenter" type="button" onClick={() => onGoTo("hero")}>
-        <img src={`${assetsBase}logo.png`} alt="BLACK ROCK" />
+        <img className="heroLogoTopBar" src={logo} alt="LUME" />
       </button>
 
       <div className="topbarActions">

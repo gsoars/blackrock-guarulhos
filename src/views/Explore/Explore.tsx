@@ -151,7 +151,7 @@ export default function Explore({
           </a>
         </div>
 
-        <div className="compareFooter">BLACK ROCK</div>
+        <div className="compareFooter">  LUME  </div>
       </div>
     </section>
   );

@@ -1,26 +1,34 @@
 import React from "react";
 import "./Hero.css";
 
+// ✅ IMPORTANDO IMAGENS (ajuste o caminho se necessário)
+import logo from "../../assets/logo_lume.png";
+import phones from "../../assets/phones.png";
+import envio from "../../assets/envio.png";
+
 type Props = {
-  assetsBase: string; // ex: `${BASE_URL}assets/`
   waHref: string;
   onGoTo: (id: string) => void;
 };
 
-export default function Hero({ assetsBase, waHref, onGoTo }: Props) {
+export default function Hero({ waHref, onGoTo }: Props) {
+ console.log("Hero carregou");
   return (
     <section className="hero" id="hero">
       <div className="heroInner">
-        <img className="heroLogo" src={`${assetsBase}logo.png`} alt="BLACK ROCK" />
+        {/* LOGO */}
+        <img className="heroLogo" src={logo} alt="LUME" />
 
         <h1 className="heroHeadline">
           iPhones Selecionados. Experiência Elevada.
         </h1>
 
+        {/* IMAGEM DOS IPHONES */}
         <div className="heroPhonesWrap" aria-hidden="true">
-          <img className="heroPhones" src={`${assetsBase}phones.png`} alt="" />
+          <img className="heroPhones" src={phones} alt="" />
         </div>
 
+        {/* BOTÕES */}
         <div className="heroCtas">
           <button
             className="heroBtn"
@@ -40,7 +48,8 @@ export default function Hero({ assetsBase, waHref, onGoTo }: Props) {
           </a>
         </div>
 
-        <div className="heroValue" aria-label="Diferenciais Black Rock">
+        {/* VALORES */}
+        <div className="heroValue" aria-label="Diferenciais da Lume">
           <div className="heroValueInner">
             <article className="valueCard">
               <div className="valueIcon" aria-hidden="true">
@@ -95,13 +104,9 @@ export default function Hero({ assetsBase, waHref, onGoTo }: Props) {
               </div>
             </article>
 
-            {/* ⬇️ AQUI FOI A ÚNICA ALTERAÇÃO */}
             <article className="valueCard">
               <div className="valueIcon" aria-hidden="true">
-                <img
-                  src={`${assetsBase}envio.png`}
-                  alt=""
-                />
+                <img src={envio} alt="" />
               </div>
               <div className="valueText">
                 <strong>Localização privilegiada</strong>
@@ -111,7 +116,7 @@ export default function Hero({ assetsBase, waHref, onGoTo }: Props) {
           </div>
         </div>
 
-        <div className="heroFooter">BLACK ROCK</div>
+        <div className="heroFooter">LUME</div>
       </div>
     </section>
   );

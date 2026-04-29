@@ -11,7 +11,7 @@ export default function Contact({ waHref }: Props) {
       <div className="contactInner">
         <h2 className="contactTitle">Contato</h2>
         <p className="contactSubtitle">
-          Fale com a <strong>Black Rock</strong>. Respondemos o mais rápido
+          Fale com a <strong>LUME</strong>. Respondemos o mais rápido
           possível pelos canais abaixo.
         </p>
 
@@ -50,7 +50,7 @@ export default function Contact({ waHref }: Props) {
 
             <div className="contactChannelText">
               <strong>Instagram</strong>
-              <span>@Blackrock.guarulhos</span>
+              <span>@lume.guarulhos</span>
             </div>
           </a>
         </div>
@@ -69,7 +69,7 @@ export default function Contact({ waHref }: Props) {
 
             <div className="contactInfoBlock">
               <div className="contactInfoHead">Instagram</div>
-              <div className="contactInfoValue">@Blackrock.guarulhos</div>
+              <div className="contactInfoValue">@lume.guarulhos</div>
               <div className="contactInfoHint">
                 Conteúdos, lançamentos e novidades.
               </div>
@@ -79,7 +79,7 @@ export default function Contact({ waHref }: Props) {
 
             <div className="contactInfoBlock">
               <div className="contactInfoHead">E-mail</div>
-              <div className="contactInfoValue">blackrockphone@gmail.com</div>
+              <div className="contactInfoValue">lumeguarulhos@gmail.com</div>
               <div className="contactInfoHint">
                 Para suporte, propostas e parcerias.
               </div>
@@ -93,7 +93,7 @@ export default function Contact({ waHref }: Props) {
                 Prédio comercial
               </div>
               <div className="contactInfoHint">
-                R. Silvestre Vasconcelos Calmon, 51 - Sala 615/6º andar - Vila Moreira, Guarulhos - SP, 07020-001
+                R. Silvestre Vasconcelos Calmon, 51 - Sala 1405 - Vila Moreira, Guarulhos - SP, 07020-001
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function Contact({ waHref }: Props) {
         </div>
 
         <div className="contactBottom">
-          <span>© 2026 BLACK ROCK. Todos os direitos reservados.</span>
+          <span>© 2026 LUME. Todos os direitos reservados.</span>
           <span>
             Desenvolvido por <strong>Nexum Tecnologia</strong>
           </span>

@@ -11,7 +11,7 @@ import iphone16 from "../assets/apple-iphone-16-new.png";
 
 
 const WHATSAPP_NUMBER = "5511918942427";
-const WHATSAPP_TEXT = "Olá! Quero saber mais sobre os iPhones da Black Rock.";
+const WHATSAPP_TEXT = "Olá! Quero saber mais sobre os iPhones da Lume.";
 
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
@@ -363,7 +363,7 @@ export default function HomePage() {
         onGoTo={goTo}
       />
 
-      <Hero assetsBase={ASSETS} waHref={waHref} onGoTo={goTo} />
+      <Hero waHref={waHref} onGoTo={goTo} />
 
       <Explore
         sectionRef={compareRef}
